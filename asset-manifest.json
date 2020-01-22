@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/jupiter/static/css/main.0472857c.chunk.css",
+    "main.js": "/jupiter/static/js/main.c7f960b1.chunk.js",
+    "main.js.map": "/jupiter/static/js/main.c7f960b1.chunk.js.map",
+    "runtime-main.js": "/jupiter/static/js/runtime-main.f95c9c89.js",
+    "runtime-main.js.map": "/jupiter/static/js/runtime-main.f95c9c89.js.map",
+    "static/js/2.3720566d.chunk.js": "/jupiter/static/js/2.3720566d.chunk.js",
+    "static/js/2.3720566d.chunk.js.map": "/jupiter/static/js/2.3720566d.chunk.js.map",
+    "index.html": "/jupiter/index.html",
+    "precache-manifest.387edd51c7bac739a1b8ac602dd18a82.js": "/jupiter/precache-manifest.387edd51c7bac739a1b8ac602dd18a82.js",
+    "service-worker.js": "/jupiter/service-worker.js",
+    "static/css/main.0472857c.chunk.css.map": "/jupiter/static/css/main.0472857c.chunk.css.map",
+    "static/js/2.3720566d.chunk.js.LICENSE": "/jupiter/static/js/2.3720566d.chunk.js.LICENSE",
+    "static/media/arrow-curved-blue.svg": "/jupiter/static/media/arrow-curved-blue.8c03b2bc.svg",
+    "static/media/kuba_arrow_button_set_1.svg": "/jupiter/static/media/kuba_arrow_button_set_1.ba5217d3.svg",
+    "static/media/kuba_arrow_button_set_2.svg": "/jupiter/static/media/kuba_arrow_button_set_2.ef649afe.svg",
+    "static/media/kuba_arrow_button_set_3.svg": "/jupiter/static/media/kuba_arrow_button_set_3.8dd73829.svg",
+    "static/media/kuba_arrow_button_set_4.svg": "/jupiter/static/media/kuba_arrow_button_set_4.2659d3c4.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f95c9c89.js",
+    "static/js/2.3720566d.chunk.js",
+    "static/css/main.0472857c.chunk.css",
+    "static/js/main.c7f960b1.chunk.js"
+  ]
+}
