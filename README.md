@@ -36,4 +36,4 @@ This app is currently deployed on github pages at https://j-currier.github.io/ju
 
 ## Acknowledgments
 
-* EvolveU
+* EvolveU  

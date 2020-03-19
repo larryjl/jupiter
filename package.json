@@ -16,6 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage --runInBand --watchAll=false; start coverage/lcov-report/index.html; open coverage/lcov-report/index.html; xdg-open coverage/lcov-report/index.html",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -34,5 +35,28 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-canvas-mock": "^2.2.0",
+    "pretty": "^2.0.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./src/App.js",
+      "!./src/index.js",
+      "!./src/serviceWorker.js",
+      "./src/**/*.js"
+    ]
+  },
+  "description": "See the deployed build at https://j-currier.github.io/jupiter/",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J-Currier/jupiter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/J-Currier/jupiter/issues"
   }
 }
