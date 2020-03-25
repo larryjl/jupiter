@@ -1,27 +1,33 @@
 {
   "files": {
-    "main.css": "/jupiter/static/css/main.0472857c.chunk.css",
-    "main.js": "/jupiter/static/js/main.c7f960b1.chunk.js",
-    "main.js.map": "/jupiter/static/js/main.c7f960b1.chunk.js.map",
-    "runtime-main.js": "/jupiter/static/js/runtime-main.f95c9c89.js",
-    "runtime-main.js.map": "/jupiter/static/js/runtime-main.f95c9c89.js.map",
-    "static/js/2.3720566d.chunk.js": "/jupiter/static/js/2.3720566d.chunk.js",
-    "static/js/2.3720566d.chunk.js.map": "/jupiter/static/js/2.3720566d.chunk.js.map",
+    "main.css": "/jupiter/static/css/main.d1a2ee09.chunk.css",
+    "main.js": "/jupiter/static/js/main.b6666c7d.chunk.js",
+    "main.js.map": "/jupiter/static/js/main.b6666c7d.chunk.js.map",
+    "runtime-main.js": "/jupiter/static/js/runtime-main.b435ec23.js",
+    "runtime-main.js.map": "/jupiter/static/js/runtime-main.b435ec23.js.map",
+    "static/js/2.be04cd12.chunk.js": "/jupiter/static/js/2.be04cd12.chunk.js",
+    "static/js/2.be04cd12.chunk.js.map": "/jupiter/static/js/2.be04cd12.chunk.js.map",
     "index.html": "/jupiter/index.html",
-    "precache-manifest.387edd51c7bac739a1b8ac602dd18a82.js": "/jupiter/precache-manifest.387edd51c7bac739a1b8ac602dd18a82.js",
+    "precache-manifest.f12929b9308ebe8782ef2ab1e3f5b5ec.js": "/jupiter/precache-manifest.f12929b9308ebe8782ef2ab1e3f5b5ec.js",
     "service-worker.js": "/jupiter/service-worker.js",
-    "static/css/main.0472857c.chunk.css.map": "/jupiter/static/css/main.0472857c.chunk.css.map",
-    "static/js/2.3720566d.chunk.js.LICENSE": "/jupiter/static/js/2.3720566d.chunk.js.LICENSE",
-    "static/media/arrow-curved-blue.svg": "/jupiter/static/media/arrow-curved-blue.8c03b2bc.svg",
-    "static/media/kuba_arrow_button_set_1.svg": "/jupiter/static/media/kuba_arrow_button_set_1.ba5217d3.svg",
-    "static/media/kuba_arrow_button_set_2.svg": "/jupiter/static/media/kuba_arrow_button_set_2.ef649afe.svg",
-    "static/media/kuba_arrow_button_set_3.svg": "/jupiter/static/media/kuba_arrow_button_set_3.8dd73829.svg",
-    "static/media/kuba_arrow_button_set_4.svg": "/jupiter/static/media/kuba_arrow_button_set_4.2659d3c4.svg"
+    "static/css/main.d1a2ee09.chunk.css.map": "/jupiter/static/css/main.d1a2ee09.chunk.css.map",
+    "static/js/2.be04cd12.chunk.js.LICENSE.txt": "/jupiter/static/js/2.be04cd12.chunk.js.LICENSE.txt",
+    "static/media/Icon_menu.6edbce04.svg": "/jupiter/static/media/Icon_menu.6edbce04.svg",
+    "static/media/btnClear.886a4983.svg": "/jupiter/static/media/btnClear.886a4983.svg",
+    "static/media/btnReflect.a48eb0e8.svg": "/jupiter/static/media/btnReflect.a48eb0e8.svg",
+    "static/media/btnReflectX.8f2c5c1b.svg": "/jupiter/static/media/btnReflectX.8f2c5c1b.svg",
+    "static/media/btnReflectY.cdf13d4d.svg": "/jupiter/static/media/btnReflectY.cdf13d4d.svg",
+    "static/media/btnRot.fcbf8090.svg": "/jupiter/static/media/btnRot.fcbf8090.svg",
+    "static/media/btnRotCounter.904778e9.svg": "/jupiter/static/media/btnRotCounter.904778e9.svg",
+    "static/media/btnRun.279bc845.svg": "/jupiter/static/media/btnRun.279bc845.svg",
+    "static/media/btnTrans.8e6dfaed.svg": "/jupiter/static/media/btnTrans.8e6dfaed.svg",
+    "static/media/btnTransArrow.8a3c2e53.svg": "/jupiter/static/media/btnTransArrow.8a3c2e53.svg",
+    "static/media/App.css": "/jupiter/static/media/planetImage.8c07d67b.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.f95c9c89.js",
-    "static/js/2.3720566d.chunk.js",
-    "static/css/main.0472857c.chunk.css",
-    "static/js/main.c7f960b1.chunk.js"
+    "static/js/runtime-main.b435ec23.js",
+    "static/js/2.be04cd12.chunk.js",
+    "static/css/main.d1a2ee09.chunk.css",
+    "static/js/main.b6666c7d.chunk.js"
   ]
 }
