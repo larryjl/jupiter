@@ -12,9 +12,10 @@ function Reflection(props) {
   }
 
   const handleClick = (e, lineOfReflection, axis) => {
-    props.reflect(e, lineOfReflection, axis);
+    // props.reflect(e, lineOfReflection, axis);
     const desc = `Reflect the shape over ${axis ? 'X': 'Y'} = ${lineOfReflection}`;
-    props.addToStack(GeneralReflect, desc, props.reflect, e);
+    const para = [e, lineOfReflection, axis]
+    props.addToStack(GeneralReflect, desc, props.reflect, para);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { Grid } from "./components/grid/gridComp";
@@ -9,10 +9,12 @@ import { Triangle } from "./components/shapes/triangleComp.js";
 // import { Heart } from "./components/shapes/heartComp.js";
 import { Star } from "./components/shapes/starComp.js";
 import { Rectangle } from "./components/shapes/rectangleComp.js";
-import { CallStack, CallCard } from './components/callStack/callStack'
-
-
+import { CallStack, CallCard } from './components/callStack/callStack';
+import Login from './components/login/loginComp';
+import Menu from './components/login/menuComp';
 import mathFunctions from "./scripts/math.js";
+import { endAttempt, postAttempt, postRun } from "./scripts/fetchFunctions";
+
 
 function Game(props) {
   let shapesArray = ["circle", "square", "star", "rectangle", "triangle"];
@@ -28,7 +30,7 @@ function Game(props) {
 
   let [startAnchorX, startAnchorY] = mathFunctions.shapeMaker(size);
   const [playerPositionsArray, setPlayerPositionsArray] = useState([[startAnchorX, startAnchorY, size, startOrientation]]);
-  const [playerAcceptablePositionsArray, setplayerAcceptablePositionsArray] = useState([[startAnchorX, startAnchorY, size, startOrientation]]);
+  const [playerAcceptablePositionsArray, setPlayerAcceptablePositionsArray] = useState([[startAnchorX, startAnchorY, size, startOrientation]]);
   const [playerPosition, setPlayerPosition] = useState([startAnchorX, startAnchorY, size, startOrientation]);
 
   let [endAnchorX, endAnchorY] = mathFunctions.shapeMaker(size);
@@ -39,9 +41,10 @@ function Game(props) {
   ) {
     [endAnchorX, endAnchorY] = mathFunctions.shapeMaker(size);
   }
-  const [targetPostition, setTargetPosition] = useState([endAnchorX, endAnchorY, size, endOrientation]);
+  const [targetPosition, setTargetPosition] = useState([endAnchorX, endAnchorY, size, endOrientation]);
 
   const [fillColour, setFillColour] = useState("rgba(137, 235, 52, 0.6)");
+  const [targetFillColour, setTargetFillColour] = useState("rgba(255, 77, 0, 0.6)");
   const [borderColour, setBorderColour] = useState("rgba(255, 255, 255, 1)");
   const [borderWidth, setBorderWidth] = useState(6);
   const [shapeClassName, setShapeClassName] = useState("Circle");
@@ -62,6 +65,24 @@ function Game(props) {
   const [callStackComps, setCallStackComps] = useState([]);
   const [counter, setCounter] = useState(0)
 
+  // -- Login hooks --
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [online, setOnline] = useState(true);
+  const [attemptId, setAttemptId] = useState(null);
+  const [score, setScore] = useState(0);
+  useEffect(() => {
+    async function startAttempt() {
+      if (online && isSignedIn) {
+        const newAttemptId = await postAttempt(user.id, currentLevel, playerPositionsArray[0], targetPosition);
+        setAttemptId(newAttemptId);
+      }
+    }
+    startAttempt();
+  }, [isSignedIn]);
+  // --
+
   let player = {
     id: "myStartPt",
     position: playerPosition,
@@ -73,8 +94,8 @@ function Game(props) {
 
   let target = {
     id: "myEndPt",
-    position: targetPostition,
-    fillColour: "rgba(255, 77, 0, 0.6)",
+    position: targetPosition,
+    fillColour: targetFillColour,
     borderColour: borderColour,
     borderWidth: borderWidth,
     shapeClassName: "endPtCircle"
@@ -84,40 +105,27 @@ function Game(props) {
     setShapeClassName(newName);
   };
 
+  // -- Shape Transformations --
   const translate = async (e, deltaX, deltaY) => {
-    let [newAnchorX, newAnchorY] = mathFunctions.translate(
-      playerPosition[0],
-      playerPosition[1],
+    let currentPlayerPosition = playerAcceptablePositionsArray[playerAcceptablePositionsArray.length-1];
+    let newPlayerPosition = mathFunctions.translate(
+      currentPlayerPosition,
       deltaX * translationFactor,
       deltaY * translationFactor
     );
-    playerPositionsArray.push([
-      newAnchorX,
-      newAnchorY,
-      playerPosition[2],
-      playerPosition[3]
-    ]);
-    playerAcceptablePositionsArray.push([
-      newAnchorX,
-      newAnchorY,
-      playerPosition[2],
-      playerPosition[3]
-    ]);
+    playerPositionsArray.push(newPlayerPosition);
+    playerAcceptablePositionsArray.push(newPlayerPosition);
     await changeClass("fade-out");
     await setTimeout(() => {
-      setPlayerPosition([
-        newAnchorX,
-        newAnchorY,
-        playerPosition[2],
-        playerPosition[3]
-      ]);
+      setPlayerPosition(newPlayerPosition);
       changeClass("fade-in");
     }, 100);
   };
 
   const reflect = async (e, lineOfReflection, axis) => { // axis: x = true, y = false
     lineOfReflection = Number(lineOfReflection);
-    let newPlayerPosition = mathFunctions.reflect(playerPosition, lineOfReflection, axis);
+    let currentPlayerPosition = playerAcceptablePositionsArray[playerAcceptablePositionsArray.length-1]
+    let newPlayerPosition = mathFunctions.reflect(currentPlayerPosition, lineOfReflection, axis);
     playerPositionsArray.push(newPlayerPosition);
     playerAcceptablePositionsArray.push(newPlayerPosition);
     await changeClass("fade-out");
@@ -131,9 +139,8 @@ function Game(props) {
     magnitude = Number(magnitude.slice(0, -1))
     pivotPointx = Number(pivotPointx)
     pivotPointy = Number(pivotPointy)
-    console.log(playerPosition, magnitude, pivotPointx, pivotPointy, direction)
-    let newPlayerPosition = mathFunctions.rotate(playerPosition, magnitude, pivotPointx, pivotPointy, direction)
-    console.log(newPlayerPosition)
+    let currentPlayerPosition = playerAcceptablePositionsArray[playerAcceptablePositionsArray.length-1]
+    let newPlayerPosition = mathFunctions.rotate(currentPlayerPosition, magnitude, pivotPointx, pivotPointy, direction)
     playerPositionsArray.push(newPlayerPosition)
     playerAcceptablePositionsArray.push(newPlayerPosition)
     await changeClass("fade-out");
@@ -142,8 +149,7 @@ function Game(props) {
       changeClass("fade-in");
     }, 100);
   };
-
-
+  // end of Shape Transformations--
 
   const moveBack_shakeVertical = async () => {
     playerAcceptablePositionsArray.pop();
@@ -166,17 +172,41 @@ function Game(props) {
     transformFunctions[name](e.target.value)
   };
 
-  const LevelCheck = () => {
-    if (JSON.stringify(playerPosition) === JSON.stringify(targetPostition)) {
-      return (
-        <div className="winner">
-          Portal Locked! <br />
-          You Win
-        </div>
-      );
-    } else {
-      return <div></div>;
+  async function resetPlayer(userId, levelId, playerPosition, targetPosition) {
+    setPlayerPosition(playerPositionsArray[0]);
+    setPlayerPositionsArray(prev => [prev[0]]);
+    setPlayerAcceptablePositionsArray(prev => [prev[0]]);
+    clearStack();
+    
+    if (online) {
+      const newAttemptId = await postAttempt(userId, levelId, playerPosition, targetPosition);
+      setAttemptId(newAttemptId);
     }
+  }
+
+  const LevelCheck = (props) => {
+    if (online) {
+      props.postRun(props.callStackComps, props.attemptId, props.playerPositionsArray, props.playerAcceptablePositionsArray, props.score, true);
+      props.endAttempt(props.attemptId);
+    }
+    function handleReset() {
+      props.resetPlayer(props.userId, props.levelId, props.playerPositionsArray[0], props.targetPosition);
+    }
+    return (
+      <div id="winner">
+        <span>Portal Locked! <br />
+        You Win</span>
+        <button 
+          id="restartBtn" 
+          key="restart" 
+          name="restart" 
+          className="levelCheckBtn" 
+          onClick={handleReset}
+        >
+          Restart
+        </button>
+      </div>
+    );
   };
 
   const shapeCompsObj = {
@@ -205,30 +235,76 @@ function Game(props) {
     />
   );
 
-  const font = 'M PLUS Rounded 1c';
-
-
+  // -- Stack Functions --
   function addToStack(image, desc, fx, para) {
-    setCounter(prevCounter => prevCounter + 1)
+
+    if (callStackComps.length < 10) {
+      setCounter(prevCounter => prevCounter + 1)
       let newComp = 
       <CallCard
       image={image}
-      // fx={fx}
-      // para = {para}
+      fx={fx}
+      para = {para}
       desc = {desc}
       id={counter}
       key={counter} />;
-      // console.log(newComp)
       setCallStackComps((prev) => [...prev, newComp])
-      // console.log(callStackComps)
+    } else {
+      alert("Too many actions in callstack. Consider removing some.")
+    }
+  }
+
+  const runStack = async () => {
+    
+    if (online && callStackComps.length > 0) {
+      await postRun(callStackComps, attemptId, playerPositionsArray, playerAcceptablePositionsArray, score, false);
+    }
+
+    // maybe try recursive function?
+    const recursiveFunc = async (array) => {
+      if (array.length > 0) {
+        await array[0].props.fx(...array[0].props.para)
+        let newArr = [...array]
+        newArr.shift(0)
+        setCallStackComps(newArr)
+        setTimeout(() => {
+          recursiveFunc(newArr)
+        }, 1000)
+      }
+    }
+    recursiveFunc(callStackComps)
   }
 
   function clearStack() {
     setCallStackComps([])
   }
+  // --
 
   return (
     <main>
+      {isSignedIn || 
+        <Login
+          setIsSignedIn = {setIsSignedIn}
+          setUser = {setUser}
+          setCurrentLevel = {setCurrentLevel}
+          online = {online}
+          setOnline = {setOnline}
+        />
+      }
+      {isSignedIn && 
+        <Menu
+          setIsSignedIn = {setIsSignedIn}
+          resetPlayer = {resetPlayer}
+          endAttempt = {endAttempt}
+          attemptId = {attemptId}
+          setUser = {setUser}
+          user = {user}
+          online = {online}
+          levelId = {currentLevel}
+          playerPosition = {playerPositionsArray[0]}
+          targetPosition = {targetPosition}
+        />
+      }
       <div className="canvasWrapper">
         <Grid />
         {targetComp}
@@ -251,9 +327,24 @@ function Game(props) {
         <CallStack
           callStackComps={callStackComps}
           clearStack={clearStack}
+          runStack = {runStack}
         />
       </div>
-      <LevelCheck key="levelCheck" />
+      {(JSON.stringify(playerPosition) === JSON.stringify(targetPosition)) &&
+        <LevelCheck 
+          resetPlayer={resetPlayer}
+          postRun={postRun}
+          endAttempt={endAttempt}
+          attemptId={attemptId}
+          callStackComps={callStackComps}
+          playerPositionsArray={playerPositionsArray}
+          playerAcceptablePositionsArray={playerAcceptablePositionsArray}
+          score={score}
+          userId={user.id}
+          levelId={currentLevel}
+          targetPosition={targetPosition}
+        />
+      }
     </main>
   );
 }

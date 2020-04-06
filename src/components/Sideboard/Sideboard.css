@@ -1,43 +1,32 @@
 #sideboard {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-rows: 1fr 9fr;
   border-style: solid;
   border-width: 1px;
   background-color: var(--game-background-color);
 }
-.tab {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  /* border-style: solid; */
-}
 
 #sideboard nav {
   display: grid;
-  width: 100%;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: var(--game-background-color);
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
 }
 .iconBtn {
   outline: none;
 }
 .tabBtn {
-  width: 90%;
-  height: 100%;
+  width: 45%;
+  height: 90%;
   margin: 4px;
-  /* font-size: 0.5vw; */
 }
 .tabBtn svg {
   width: 100%;
   height: 100%;
-  min-width: 40px;
-  min-height: 40px;
-  max-width: 60px;
-  max-height: 60px;
+  outline: none;
 }
 .tabBtn path,
 .tabBtn ellipse {
@@ -54,14 +43,12 @@
 .tabBtn .activeTab ellipse {
   stroke: var(--icon-stroke-color);
 }
+
+
 .controlBtn,
 .controlBtn svg {
   width: 100%;
   height: 100%;
-  min-width: 40px;
-  min-height: 40px;
-  max-width: 60px;
-  max-height: 60px;
 }
 .controlBtn path,
 .controlBtn ellipse {
@@ -73,7 +60,7 @@
 .iconBtn:hover {
   transition: 0.1s;
   outline: none;
-  filter: drop-shadow(0px 0px 2px #000);
+  filter: drop-shadow(0px 0px 2px #fff);
 }
 .iconBtn:active {
   transition: .1s;
@@ -82,21 +69,17 @@
 }
 .controlInputNum,
 .controlSelect {
-  /* color: var(--text-secondary-color); */
-  color: var(--blue-4);
-  font-size: 1.5em;
-  font-weight: Bold;
-  border: solid 5px var(--icon-stroke-color);
-  border-radius: 8px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  background-color: var(--gold-02);
-  /* background: var(--icon-fill-color); */
+  border: solid var(--icon-stroke-color);
+  font-size: inherit;
+  border-width: 2px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background-color: var(--gold02);
+  color: var(--blue4);
   text-align: center;
 }
 .controlInputNum {
-  /* font-size: 1.5em; */
-  width: 3rem;
   -moz-appearance: textfield;
 }
 .controlInputNum::-webkit-inner-spin-button,
@@ -104,9 +87,6 @@
   -webkit-appearance: none;
   margin: 0;
 }
-/* .controlSelect {
-  font-size: 1.5em;
-} */
 .reflectXBtn {
   transform: scaleX(-1);
 }

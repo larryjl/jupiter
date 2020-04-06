@@ -1,7 +1,30 @@
+#reflection {
+    justify-self: center;
+    align-self: center;
+    width: 100%;
+    height: 13%;
+}
+
 #reflection .controls{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center; 
     align-items: center;
     width: 100%;
+    height: 100%;
+}
+
+#reflectXBtn {
+    width: 45%;
+    height: 100%;
+    justify-self: right;
+}
+#reflectDrop {
+    width: 80%;
+    height: 48%;
+}
+#reflectYBtn {
+    width: 45%;
+    height: 100%;
+    justify-self: left;
 }

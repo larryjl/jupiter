@@ -1,14 +1,36 @@
 :root {
-  --green-1: #50CC5F /* rgb(80, 204, 95) */;
-  --green-2: #2CBF3E /* rgb(44, 191, 62) */;
-  /* --text-emphasis-color: rgba(137, 235, 52, 1); */
-  --green-3: #08AF1D /* rgb(8, 175, 29) */;
-  --green-4: #008C11 /* rgb(0, 140, 17)*/; 
-  --green-5: #006D0D /* rgb(0, 109, 13)*/;
- 
-  --blue-1: #5A5CBB /* rgb(90, 92, 187)*/;
-  --blue-2: #3B3EAC /* rgb(59, 62, 172)*/;
-  --blue-3: #1D219D /* rgb(29, 33, 157)*/;
+  --blue1: #5A5CBB /* rgb(90, 92, 187) */;
+  --blue2: #3B3EAC /* rgb(59, 62, 172) */;
+  --blue3: #1D219D /* rgb(29, 33, 157) */;
+  --blue4: #13157E /* rgb(19, 21, 126) */;
+  --blue5: #0B0D62 /* rgb(11, 13, 98) */;
+
+  --red1: #FF6B63 /* rgb(255, 107, 99) */;
+  --red2: #F64238 /* rgb(246, 66, 56) */;
+  --red3: #E2160B /* rgb(226, 22, 11) */;
+  --red4: #B50900 /* rgb(181, 9, 0) */;
+  --red5: #8C0700 /* rgb(140, 7, 0) */;
+
+  --green1: #50CC5F /* rgb(80, 204, 95) */;
+  --green2: #2CBF3E /* rgb(44, 191, 62) */;
+  --green3: #08AF1D /* rgb(8, 175, 29) */;
+  --green4: #008C11 /* rgb(0, 140, 17) */;
+  --green5: #006D0D /* rgb(0, 109, 13) */;
+
+  --gold02: #ffe699 /* rgb(255, 230, 153) */;
+  --gold1: #FFD763 /* rgb(255, 215, 99) */;
+  --gold2: #F6C638 /* rgb(246, 198, 56) */;
+  --gold3: #E2AB0B /* rgb(226, 171, 11) */;
+  --gold4: #B58700 /* rgb(181, 135, 0) */;
+  --gold5: #8C6800 /* rgb(140, 104, 0) */;
+
+  --black5: #000000 /* rgb(255, 255, 255) */;
+  --white1: #FFFFFF /* rgb(0, 0, 0) */;
+
+  --text-primary-color: #0f0f0f;
+  --text-secondary-color: #f0f8ff;
+  --text-emphasis-color: rgba(137, 235, 52, 1);
+  --icon-fill-color: #e2ab0b;
   --icon-stroke-color: #1d219d;
   --blue-4: #13157E /* rgb(19, 21, 126)*/;
   --blue-5: #0B0D62 /* rgb(11, 13, 98) */;
@@ -30,10 +52,7 @@
 
   --icon-stroke-color2: rgb(50, 50, 50, 0.7);
   --game-background-color: rgba(255, 255, 255, 0.2);
-  --text-primary-color: #000;
-  --black-5: #000000 /* rgb(0, 0, 0)*/;
-  /* --text-secondary-color: #fff; */
-  --white-1: #ffffff /* rgb(255, 255, 255) */;
+  --menu-background-color: rgb(240, 248, 255, 0.9);
 }
 
 html, body {
@@ -64,45 +83,11 @@ input, select, textarea, button{
   height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 button {
   border:0;
   padding:0;
   background-color:transparent;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 1450px) {
@@ -154,23 +139,30 @@ button {
   }
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 850px) and (min-width: 750px) {
   .canvasWrapper, .controllerWrapper {
       width: 350px;
       height: 350px;
   }
 }
 
+@media screen and (max-width: 750px) {
+  .canvasWrapper, .controllerWrapper {
+      width: 300px;
+      height: 300px;
+  }
+}
+
 .canvasWrapper {
   position: relative;
-  margin: 40px 5px 0px 5px;
+  margin: 30px 5px 0px 5px;
   background-color: var(--game-background-color);
 }
 
 .controllerWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 40px 5px 0px 5px;
+  margin: 30px 5px 10px 5px;
 }
 
 main {
@@ -187,14 +179,37 @@ main {
   background-position: center center;
 }
 
-.winner {
+#winner {
   font-size: 500%;
   /* color: var(--text-emphasis-color); */
   color: var(--green-2);
   font-family: "Bangers", cursive;
-  height: 60vh;
-  vertical-align: middle;
+  height: 100%;
+  padding: 60px 5px 0 5px;
   width: 100%;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#winner #restartBtn {
+  font-size: 3rem;
+  color: var(--icon-stroke-color);
+  background-color: var(--icon-fill-color);
+  border-radius: 1.5rem;
+  border: 10px solid var(--icon-stroke-color);
+  padding: 10px;
+  margin: 20px;
+  outline: none;
+}
+#winner #restartBtn:hover {
+  transition: 0.1s;
+  filter: drop-shadow(0px 0px 4px #fff);
+}
+#winner #restartBtn:active {
+  transition: .1s;
+  transform: scale(1.05);
+  transform-origin: center center;
 }

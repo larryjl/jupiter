@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/Graph Hopper API/Graph Hopper/appsettings.json
+/Graph Hopper API/.vs
+/Graph Hopper API/Graph Hopper/bin
+/Graph Hopper API/Graph Hopper/obj

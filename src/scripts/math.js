@@ -12,10 +12,11 @@ const mathFunctions = {
         return [anchorX, anchorY]
     },
 
-    translate: (x, y, deltaX, deltaY) => {
-        let endX = x + deltaX;
-        let endY = y + deltaY;
-        return [endX, endY]
+    translate: (playerPosition, deltaX, deltaY) => {
+        let [anchorX, anchorY, size , orientation] = playerPosition;
+        anchorX = anchorX + deltaX;
+        anchorY = anchorY + deltaY;
+        return ([anchorX, anchorY, size , orientation]);
     },
 
     reflect: (playerPosition, lineOfReflection, axis) => { // axis: x = true, y = false

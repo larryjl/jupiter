@@ -1,4 +1,3 @@
-See the deployed build at https://j-currier.github.io/jupiter/
 
 # Math Transformations Game
 
@@ -15,12 +14,17 @@ npm start
 
 ## Deployment
 
-This app is currently deployed on github pages at https://j-currier.github.io/jupiter/
+This app is currently deployed on following addresses
+github: https://j-currier.github.io/jupiter/
+Azure: https://graphhopper.azurewebsites.net/
 
 ## Built With
 
 * [React](https://reactjs.org) - JS framework
 * [Jest](https://jestjs.io/) - testing framework
+* [Visual Studio .Net C#](https://docs.microsoft.com/en-us/dotnet/csharp/) - API App
+* [SQL Server](https://www.microsoft.com/en-ca/sql-server/sql-server-2019) - Database
+
 
 ## Authors
 
