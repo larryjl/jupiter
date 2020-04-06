@@ -1,6 +1,6 @@
 {
-  "homepage": "https://graphhopper.azurewebsites.net",
-  "name": "graphhopper",
+  "homepage": "https://larryjl.github.io/jupiter",
+  "name": "jupiter",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
