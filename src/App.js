@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { Grid } from "./components/grid/gridComp";
-import sideboard from "./components/sideboard/sideboardComp";
+import Sideboard from "./components/sideboard/sideboardComp";
 import { Circle } from "./components/shapes/circleComp.js";
 import { Square } from "./components/shapes/squareComp.js";
 import { Triangle } from "./components/shapes/triangleComp.js";
@@ -290,7 +290,7 @@ function Game(props) {
         {playerComp}
       </div>
       <div className="controllerWrapper">
-        <sideboard
+        <Sideboard
           translate={translate}
           rotate={rotate}
           reflect={reflect}

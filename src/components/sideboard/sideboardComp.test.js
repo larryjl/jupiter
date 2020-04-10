@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import pretty from "pretty";
 
-import sideboardComp from "./sideboardComp";
+import Sideboard from "./sideboardComp";
 
 describe("sideboard load", () => {
   let container = null;
@@ -23,7 +23,7 @@ describe("sideboard load", () => {
 
   test("render", () => {
     act(() => {
-      render(<sideboardComp />, container);
+      render(<Sideboard />, container);
     });
   });
 })
@@ -39,7 +39,7 @@ describe("sideboard tab clicks", () => {
 
     act(() => {
       render(
-        <sideboardComp
+        <Sideboard
         translate={translate}
         rotate={rotate}
         reflect={reflect}

@@ -34,7 +34,7 @@ export default function Login(props) {
   }, []);
 
   useEffect(() => {
-    loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
+    // loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
   }, []);
 
   async function gapiSetup() {

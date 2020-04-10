@@ -7,7 +7,7 @@ import { ReactComponent as TranslationSvg } from "../../images/btnTrans.svg";
 import { ReactComponent as RotationSvg } from "../../images/btnRot.svg";
 import { ReactComponent as ReflectionSvg } from "../../images/btnReflect.svg";
 
-function sideboard(props) {
+function Sideboard(props) {
   const [tab, setTab] = useState(null);
 
   function handleClick(e) {
@@ -93,4 +93,4 @@ function sideboard(props) {
   );
 }
 
-export default sideboard;
+export default Sideboard;
