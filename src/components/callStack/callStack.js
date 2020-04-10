@@ -2,19 +2,26 @@ import React, { useState } from 'react'
 import './callStack.css'
 import { ReactComponent as ClearSvg } from "../../images/btnClear.svg";
 import { ReactComponent as RunSvg } from "../../images/btnRun.svg";
+import { ReactComponent as DeleteSvg } from "../../images/btnDelete.svg";
 
 
 
 export function CallCard(props) {
-
     const Svg = props.image
+
+    function handleClick() {
+        props.deleteItem(props.id);
+    }
+    
     return(
         <div className="calling-card" id={props.id} key = {props.id}>
             <Svg 
                 className="cardIcon"
             />
             <p>{props.desc}</p>
-            {/* <button>X</button> */}
+            <button className="delete-button iconBtn" onClick={handleClick}>
+            <DeleteSvg className="deleteIcon"></ DeleteSvg>
+            </button>
         </div>
     )
 }
@@ -35,7 +42,7 @@ export function CallStack(props) {
     //     // }
     // }
     return(
-        <div  className='call-stack'>
+        <div  className='call-stack' >
             <div className='cards-div'>
                 {props.callStackComps}
             </div>

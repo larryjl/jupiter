@@ -10,6 +10,10 @@ function Rotation(props) {
   for (const angle of angles) {
     options.push(<option key={angle}>{angle + "°"}</option>);
   }
+  const selector = [];
+  for (let i = 9; i >= -9; i--) {
+    selector.push(<option key={i}>{i}</option>);
+  }
 
   const handleClick = (
     e,
@@ -29,24 +33,26 @@ function Rotation(props) {
     <div id="rotation" className="tab">
       <div className="controls">
         <div id="pivotCoords">
-          <input
+          <select
             id="setPivotPointx"
             key="setPivotPointx"
-            className="controlInputNum"
-            type="number"
+            className="controlSelect"
             name="setPivotPointx"
             value={props.pivotPointx}
             onChange={props.handleChange}
-          ></input>
-          <input
+          >
+            {selector}
+          </select>
+          <select
             id="setPivotPointy"
             key="setPivotPointy"
-            className="controlInputNum"
-            type="number"
+            className="controlSelect"
             name="setPivotPointy"
             value={props.pivotPointy}
             onChange={props.handleChange}
-          ></input>
+          >
+            {selector}
+          </select>
         </div>
         <div id="rotateDirection">
           <button

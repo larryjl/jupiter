@@ -10,8 +10,9 @@ import { Triangle } from "./components/shapes/triangleComp.js";
 import { Star } from "./components/shapes/starComp.js";
 import { Rectangle } from "./components/shapes/rectangleComp.js";
 import { CallStack, CallCard } from './components/callStack/callStack';
-import Login from './components/login/loginComp';
-import Menu from './components/login/menuComp';
+import Login from "./components/login/loginComp";
+import Menu from "./components/menu/menuComp";
+import LevelCheck from "./components/levelCheck/levelCheckComp";
 import mathFunctions from "./scripts/math.js";
 import { endAttempt, postAttempt, postRun } from "./scripts/fetchFunctions";
 
@@ -184,31 +185,6 @@ function Game(props) {
     }
   }
 
-  const LevelCheck = (props) => {
-    if (online) {
-      props.postRun(props.callStackComps, props.attemptId, props.playerPositionsArray, props.playerAcceptablePositionsArray, props.score, true);
-      props.endAttempt(props.attemptId);
-    }
-    function handleReset() {
-      props.resetPlayer(props.userId, props.levelId, props.playerPositionsArray[0], props.targetPosition);
-    }
-    return (
-      <div id="winner">
-        <span>Portal Locked! <br />
-        You Win</span>
-        <button 
-          id="restartBtn" 
-          key="restart" 
-          name="restart" 
-          className="levelCheckBtn" 
-          onClick={handleReset}
-        >
-          Restart
-        </button>
-      </div>
-    );
-  };
-
   const shapeCompsObj = {
     circle: Circle,
     square: Square,
@@ -238,7 +214,7 @@ function Game(props) {
   // -- Stack Functions --
   function addToStack(image, desc, fx, para) {
 
-    if (callStackComps.length < 10) {
+    if (callStackComps.length < 8) {
       setCounter(prevCounter => prevCounter + 1)
       let newComp = 
       <CallCard
@@ -246,6 +222,7 @@ function Game(props) {
       fx={fx}
       para = {para}
       desc = {desc}
+      deleteItem = {deleteItem}
       id={counter}
       key={counter} />;
       setCallStackComps((prev) => [...prev, newComp])
@@ -260,7 +237,6 @@ function Game(props) {
       await postRun(callStackComps, attemptId, playerPositionsArray, playerAcceptablePositionsArray, score, false);
     }
 
-    // maybe try recursive function?
     const recursiveFunc = async (array) => {
       if (array.length > 0) {
         await array[0].props.fx(...array[0].props.para)
@@ -277,6 +253,10 @@ function Game(props) {
 
   function clearStack() {
     setCallStackComps([])
+  }
+
+  function deleteItem(cardKey) {
+    setCallStackComps(prev => prev.filter(card => card.props.id !== cardKey));
   }
   // --
 
@@ -328,6 +308,7 @@ function Game(props) {
           callStackComps={callStackComps}
           clearStack={clearStack}
           runStack = {runStack}
+          deleteItem = {deleteItem}
         />
       </div>
       {(JSON.stringify(playerPosition) === JSON.stringify(targetPosition)) &&
@@ -343,6 +324,7 @@ function Game(props) {
           userId={user.id}
           levelId={currentLevel}
           targetPosition={targetPosition}
+          online={online}
         />
       }
     </main>

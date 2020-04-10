@@ -1,8 +1,8 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { determineCorners, draw, checkBounds } from "./shapeComp";
-import Shape from "./shapeComp";
+import { determineCorners, draw, checkBounds } from "./shapeComp.old.js";
+import Shape from "./shapeComp.old.js";
 
 describe("determine corners", () => {
   test("circle 0", () => {

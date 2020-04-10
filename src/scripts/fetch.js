@@ -1,27 +1,27 @@
 import fetch from "node-fetch";
 import { apiUrls } from "../config";
 
-// for local testing without ssl
+// -- for local testing without ssl
 import https from "https";
 const agent = new https.Agent({
   rejectUnauthorized: (process.env.NODE_ENV==="test")? false: true
 });
-//
+// --
 
 let baseUrl = apiUrls[process.env.NODE_ENV];
 
 async function fetchJson(route, method = "POST", body = {}) {
   const init = {
-    // Default options are marked with *
     method: method, // *GET, POST, PUT, DELETE, etc.
-    // mode: "cors", // no-cors, *cors, same-origin
-    // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    // credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json"
     },
-    // redirect: "follow", // manual, *follow, error
-    // referrer: "no-referrer", // no-referrer, *client
+    // // defaults:
+    // mode: "cors",
+    // cache: "default",
+    // credentials: "same-origin",
+    // redirect: "follow",
+    // referrer: "client"
     agent: agent
   };
   if (method === "POST" || method === "PUT") {
@@ -35,7 +35,6 @@ async function fetchJson(route, method = "POST", body = {}) {
     return await response.json();
   } catch (error) {
     const message = `/${route}: ${method} error: ${error}`
-    // console.log(message);
     throw new Error(message);
   }
 }
@@ -57,7 +56,6 @@ async function tokenInfo(idToken) {
     }
   } catch (error) {
     const message = ("tokeninfo fetch error: " + error);
-    // console.log(message);
     throw new Error(message);
   }
 }

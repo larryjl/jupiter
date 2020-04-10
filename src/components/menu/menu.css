@@ -1,0 +1,99 @@
+#menu {
+    display: flex;
+    justify-content: flex-start;
+  }
+  #menuBtn {
+    outline: none;
+    z-index: 99;
+    padding: 5px 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  #menuBtn,
+  #menuBtn svg {
+    height: 30px;
+    width: 30px;
+    outline: none;
+  }
+  #menuBtn.closed path {
+    fill: var(--text-secondary-color);
+  }
+  #menuBtn.open path {
+    fill: var(--text-primary-color);
+  }
+  #menuBtn.closed svg:hover {
+    transition: 0.1s;
+    filter: drop-shadow(0px 0px 2px #fff);
+  }
+  #menuBtn.open svg:hover {
+    transition: 0.1s;
+    filter: drop-shadow(0px 0px 2px #000);
+  }
+  #menuBtn svg:active {
+    transition: 0.1s;
+    transform: scale(1.1);
+    transform-origin: center center;
+  }
+  #menuNav, #scoreTab {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    background-color: var(--menu-background-color);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    transition: left ease-in-out 0.5s;
+  }
+  #menuNav {
+    z-index: 4;
+  }
+  #scoreTab {
+    z-index: 3;
+  }
+  #menuNav.open, #scoreTab.open {
+    left: 0;
+  }
+  #menuNav.closed,#scoreTab.closed {
+    left: -100%;
+  }
+  #menuNav .navBtn {
+    font-size: 1.5em;
+    padding: 1em 2em;
+    margin: 1em 0;
+    color: var(--text-primary-color);
+  }
+  #menuNav .navBtn:hover {
+    background-color: var(--menu-highlight-color);
+    color: var(--text-secondary-color);
+  }
+  #menuNav .navBtn:active {
+    transition: .1s;
+    transform: scale(1.05);
+    transform-origin: center center;
+  }
+  
+  #highScore {
+    font-size: 1.5em;
+    color: var(--text-primary-color);
+    border-top: 2px solid #fff;
+    border-collapse: collapse;
+  }
+  #highScore th, #highScore td {
+    padding: 1em 2em;
+    border-bottom: 2px solid #fff;
+  }
+  #highScore th {
+    background-color: var(--menu-highlight-color);
+    color: #fff;
+  }
+  #highScore .highlight {
+    font-weight: bold;
+  }
+  #noScore {
+    font-size: 2em;
+    margin: 10%;
+  }

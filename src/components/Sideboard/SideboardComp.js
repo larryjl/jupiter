@@ -23,6 +23,7 @@ function Sideboard(props) {
   return (
     <div id="sideboard">
       <nav>
+        <div id="translation-div" className={(tab === "translation")? "activeDiv": "inactiveDiv"}>
         <button
           id="translation-button"
           className="tabBtn iconBtn"
@@ -34,28 +35,33 @@ function Sideboard(props) {
             className={(tab === "translation")? "activeTab": ""}
           />
         </button>
-        <button
-          id="rotation-button"
-          className="tabBtn iconBtn"
-          onClick={handleClick}
-        >
-          <RotationSvg 
-            alt="Rotation" 
-            tabIndex="0"
-            className={(tab === "rotation")? "activeTab": ""}
-          />
-        </button>
-        <button
-          id="reflection-button"
-          className="tabBtn iconBtn"
-          onClick={handleClick}
-        >
-          <ReflectionSvg 
-            alt="Reflection" 
-            tabIndex="0"
-            className={(tab === "reflection")? "activeTab": ""}
-          />
-        </button>
+        </div>
+        <div id="rotation-div" className={(tab === "rotation")? "activeDiv": "inactiveDiv"}>
+          <button
+            id="rotation-button"
+            className="tabBtn iconBtn"
+            onClick={handleClick}
+          >
+            <RotationSvg 
+              alt="Rotation" 
+              tabIndex="0"
+              className={(tab === "rotation")? "activeTab": ""}
+            />
+          </button>
+        </div>
+        <div id="reflection-div" className={(tab === "reflection")? "activeDiv": "inactiveDiv"}>
+          <button
+            id="reflection-button"
+            className="tabBtn iconBtn"
+            onClick={handleClick}
+          >
+            <ReflectionSvg 
+              alt="Reflection" 
+              tabIndex="0"
+              className={(tab === "reflection")? "activeTab": ""}
+            />
+          </button>
+        </div>
       </nav>
       {tab === "translation" && (
         <Translation

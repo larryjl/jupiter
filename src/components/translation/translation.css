@@ -13,8 +13,8 @@
     height: 100%;
   }
 #translation #factorBox {
-    width: 49%;
-    height: 49%;
+    width: 72%;
+    height: 60%;
     grid-column-start: 2;
     grid-row-start: 2;
     align-self: center;

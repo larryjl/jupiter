@@ -75,7 +75,10 @@ function Star(props) {
     }
     
     drawStar(fillColour, borderColour, borderWidth);
-    if (anchorDotSize) shapesFunctions.drawAnchorDot(context, anchorX, anchorY, anchorDotSize, 'white', 'white', borderWidth);
+    if (anchorDotSize) {
+      shapesFunctions.drawAnchorDot(context, cornerArray[0][0], cornerArray[0][1], anchorDotSize, 'white', 'white', borderWidth);
+      shapesFunctions.drawAnchorDot(context, cornerArray[2][0], cornerArray[2][1], anchorDotSize, 'black', 'black', borderWidth);
+  }
   }, [position]);
 
   return (

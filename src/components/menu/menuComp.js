@@ -1,8 +1,9 @@
-/* global gapi */
-import React, { useState, useEffect } from "react";
-import "./login.css";
+/* global gapi */ // Do not remove. indicates predefined global variable.
+import React, { useState } from "react";
+import "./menu.css";
 import { ReactComponent as MenuSvg } from "../..//images/Icon_menu.svg";
 import { fetchJson } from "../../scripts/fetch";
+import { googleSignOut } from "../login/loginComp";
 
 
 function countMatchingObjects(array, compareKey, matchValue, filter) {
@@ -52,7 +53,6 @@ async function getScore(playerId) {
 export default function Menu(props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scoreOpen, setScoreOpen] = useState(false);
-  // const [overlay, setOverlay] = useState(false);
   const [scoreDisplay, setScoreDisplay] = useState(null);
 
   function handleMenu() {
@@ -105,8 +105,9 @@ export default function Menu(props) {
     setMenuOpen(false);
   }
   async function handleClickSignOut() {
-    const auth2 = await gapi.auth2.getAuthInstance();
-    await auth2.signOut();
+    if (props.user.type !== "guest") {
+      googleSignOut();
+    }
     setMenuOpen(false);
     props.setUser(null);
     setTimeout(() => {
@@ -115,7 +116,7 @@ export default function Menu(props) {
   }
   const buttonInfo = {
     highScoresBtn: { handleClick: handleClickHighScores, text: "High Scores" },
-    restartBtn: { handleClick: handleClickRestart, text: "Restart Level" },
+    restartBtn: { handleClick: handleClickRestart, text: "Restart" },
     logoutBtn: { handleClick: handleClickSignOut, text: "Sign Out" }
   };
   const buttons = [];

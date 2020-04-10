@@ -9,13 +9,22 @@
 #sideboard nav {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  background-color: var(--game-background-color);
+  grid-template-rows: 1fr;
+  height: 100%;
+  width: 100%;
+  align-self: start;
   justify-items: center;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   align-content: center;
 }
-.iconBtn {
+.activeDiv {
+  background-color: none;
+}
+.inactiveDiv {
+  background-color: var(--game-background-color);
+}
+.iconBtn, .iconBtn svg {
   outline: none;
 }
 .tabBtn {
@@ -36,12 +45,11 @@
   fill: var(--icon-fill-color2);
 }
 .tabBtn .activeTab ellipse {
-  fill: var(--gold-2);
-  /* fill: var(--icon-fill-color); */
+  fill: var(--icon-fill-color3);
 }
 .tabBtn .activeTab path,
 .tabBtn .activeTab ellipse {
-  stroke: var(--icon-stroke-color);
+  stroke: var(--icon-stroke-color3);
 }
 
 
@@ -57,9 +65,8 @@
 .controlBtn ellipse {
   fill: var(--gold-2);
 }
-.iconBtn:hover {
+.iconBtn:hover, .controlSelect:hover {
   transition: 0.1s;
-  outline: none;
   filter: drop-shadow(0px 0px 2px #fff);
 }
 .iconBtn:active {
@@ -67,7 +74,14 @@
   transform: scale(1.05);
   transform-origin: center center;
 }
-.controlInputNum,
+
+/* Select dropdowns to match Chrome in Firefox */
+@supports (-moz-appearance:none) {
+  .controlSelect {
+    -moz-appearance:none;
+    background: url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') calc(100% - 5px) center no-repeat;
+  }
+}
 .controlSelect {
   border: solid var(--icon-stroke-color);
   font-size: inherit;
@@ -75,18 +89,14 @@
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  background-color: var(--gold02);
-  color: var(--blue4);
+  background-color: var(--input-background-color);
+  color: var(--input-font-color);
   text-align: center;
+  /* Chrome */
+  text-align-last: center;
+  appearance: none;
 }
-.controlInputNum {
-  -moz-appearance: textfield;
-}
-.controlInputNum::-webkit-inner-spin-button,
-.controlInputNum::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+
 .reflectXBtn {
   transform: scaleX(-1);
 }
