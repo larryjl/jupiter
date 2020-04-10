@@ -49,15 +49,15 @@
       "./src/**/*.js"
     ]
   },
-  "description": "See the deployed build at https://larryjl.github.io/jupiter",
+  "description": "See the deployed build at https://j-currier.github.io/jupiter/",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/larryjl/jupiter.git"
+    "url": "git+https://github.com/J-Currier/jupiter.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/larryjl/jupiter/issues"
+    "url": "https://github.com/J-Currier/jupiter/issues"
   }
 }
