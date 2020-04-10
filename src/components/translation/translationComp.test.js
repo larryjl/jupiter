@@ -96,13 +96,13 @@ describe('component', () => {
     expect(mockAddToStack.mock.calls.length).toBe(1);
   });
   test('change factorBox', () => {
-    for (let i = 0; i <= 18; i++) {
+    for (let i = 1; i <= 18; i++) {
       act(() => {
         fireEvent.change(factorBox, { target: { value: i } });
         factorBox.value = i; // manually change value instead of using mockHandle
       });
       expect(factorBox.value).toBe(i.toString());
-      expect(mockHandle.mock.calls.length).toBe(i+1);
+      expect(mockHandle.mock.calls.length).toBe(i);
     }
   });
 });

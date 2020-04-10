@@ -37,19 +37,23 @@ function Translation(props) {
     );
   }
 
+  const selector = [];
+  for (let i = 1; i <= 18; i++) {
+    selector.push(<option key={i}>{i}</option>);
+  }
+
   return (
     <div id="translation" className="tab">
       <div className="controls">
-        <input
+        <select
           name="setTranslationFactor"
-          type="number"
-          min="0"
-          max="18"
           onChange={props.handleChange}
           value={props.translationFactor}
           id="factorBox"
-          className="controlInputNum"
-        />
+          className="controlSelect"
+        >
+          {selector}
+        </select>
         {buttons}
       </div>
     </div>

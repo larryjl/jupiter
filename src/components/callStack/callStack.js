@@ -10,7 +10,7 @@ export function CallCard(props) {
     const Svg = props.image
 
     function handleClick() {
-        props.deleteItem(props.id + 1)
+        props.deleteItem(props.id);
     }
     
     return(
@@ -19,8 +19,8 @@ export function CallCard(props) {
                 className="cardIcon"
             />
             <p>{props.desc}</p>
-            <button id="delete-button" className="iconBtn" onClick={handleClick}>
-            <DeleteSvg className="deleteIcon">X</ DeleteSvg>
+            <button className="delete-button iconBtn" onClick={handleClick}>
+            <DeleteSvg className="deleteIcon"></ DeleteSvg>
             </button>
         </div>
     )

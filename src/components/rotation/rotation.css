@@ -31,8 +31,8 @@
 
 #setPivotPointx, #setPivotPointy {
     align-self: end;
-    width: 20%;
-    height: 40%;
+    width: 30%;
+    height: 50%;
     margin: 5px;
 }
 
@@ -51,7 +51,7 @@
     justify-self: right;
 }
 #rotateDrop {
-    width: 80%;
+    width: 60%;
     height: 70%;
 }
 #rotation #rotate-right {

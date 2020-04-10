@@ -256,14 +256,7 @@ function Game(props) {
   }
 
   function deleteItem(cardKey) {
-    // setCallStackComps((prev) => [...prev])
-    console.log("New Line")
-    const newArr = []
-    callStackComps.forEach((x) => {
-      console.log(x)
-      newArr.push(x)
-    })
-    setCallStackComps(newArr)
+    setCallStackComps(prev => prev.filter(card => card.props.id !== cardKey));
   }
   // --
 

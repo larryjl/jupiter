@@ -1,0 +1,35 @@
+.ellipsis {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 1em;
+    width: 3em;
+}
+.ellipsis svg {
+    position: absolute;
+    height: 3em;
+    width: 3em;
+    top: -1em;
+}
+.ellipsis path {
+    fill: var(--text-secondary-color);
+    animation: enter ease-in-out 1s infinite alternate;
+    -webkit-animation: enter ease-in-out 1s infinite alternate;
+}
+@keyframes enter {
+    from {fill: var(--text-secondary-color)}
+    to {fill:transparent}
+}
+@-webkit-keyframes enter {
+    from {fill: var(--text-secondary-color)}
+    to {fill:transparent}
+}
+.ellipsis path:nth-child(1) {
+    animation-delay: 1s;
+}
+.ellipsis path:nth-child(2) {
+    animation-delay: 1.5s;
+}
+.ellipsis path:nth-child(3) {
+    animation-delay: 2s;
+}

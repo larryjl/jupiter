@@ -98,17 +98,17 @@
     grid-template-columns: 2fr 12fr 1fr;
     grid-template-rows: 1fr;
 }
-.calling-card #delete-button {
+.calling-card .delete-button {
     margin: 0;
-    width: 90%;
-    height: 27%;
+    width: 80%;
+    height: 50%;
     align-self: start;
-    justify-self: end;
+    justify-self: start;
 }
 .calling-card .cardIcon {
     margin: 0;
-    height: 55%;
-    width: 90%;
+    height: 47%;
+    width: 80%;
     align-self: center;
     justify-self: center;
 }

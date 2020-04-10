@@ -1,9 +1,10 @@
 /* global gapi */ // Do not remove. Indicates predefined global variable.
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./login.css";
 import { keys } from "../../config.js";
 import { fetchJson, tokenInfo } from "../../scripts/fetch";
 import loadScript from "../../scripts/loadScript";
+import LoadIcon from "../loadIcon/loadIcon";
 
 export default function Login(props) {
   const { setIsSignedIn, setUser, setCurrentLevel, online, setOnline } = props;
@@ -11,20 +12,37 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const [usernameMsg, setUsernameMsg] = useState("");
   const [passwordMsg, setPasswordMsg] = useState("");
+  const [loading, setLoading] = useState(true);
   const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in...");
   const [gapiLoaded, setGapiLoaded] = useState(false);
 
+  // Loading Icon
   useEffect(() => {
-    if (window.gapi) {
-      gapiSetup();
-    } else {
-      loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
-    }
+    setLoading(loginMsg.includes("...") ? true : false );
+    setLoginMsg(prev => prev.replace("...", "."))
+  }, [loginMsg]);
+
+  // Display in case sign in never loads
+  const gapiLoadedRef = useRef(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (gapiLoadedRef.current === false) {
+        setLoginMsg("Google Sign-in is temporarily unavailable.");
+      }
+    }, 5000);
+    return () => clearTimeout(timer)
+  }, []);
+
+  useEffect(() => {
+    loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
   }, []);
 
   async function gapiSetup() {
-    setGapiLoaded(true);
-    setLoginMsg("");
+    if (window.gapi) {
+      setGapiLoaded(true);
+      gapiLoadedRef.current = true;
+      setLoginMsg("");
+    }
     // // initialize google api
     await window.gapi.load("auth2", async () => {
       await gapi.auth2.init({
@@ -138,13 +156,14 @@ export default function Login(props) {
   }
 
   function handleFailure() {
-    setLoginMsg("Google sign-in cancelled.")
+    setLoginMsg("Google sign-in failed.")
     setIsSignedIn(false);
   }
 
   function handleGLoginClick() {
   }
   // ---
+
   // --- Regular Login ---
   function validateUsername(username) {
     let valid =
@@ -190,6 +209,7 @@ export default function Login(props) {
     setPassword(e.target.value);
   }
   // --- 
+
   // --- Guest Login
   function handleGuest() {
     const userObject = {
@@ -277,7 +297,9 @@ export default function Login(props) {
         {gapiLoaded &&
           <button id="gLoginBtn" onClick={handleGLoginClick}></button>
         }
-        <div className="loginLabel">{loginMsg}</div>
+        <div className="loginLabel">
+          {loginMsg}{loading && <LoadIcon />}
+        </div>
       </div>
     </div>
   );
