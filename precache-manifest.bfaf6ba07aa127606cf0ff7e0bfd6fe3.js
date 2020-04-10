@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fa5014aefee42a57c41ba0d79613f120",
+    "revision": "cc12249ed4bd001120d0fd8cc4deee00",
     "url": "/jupiter/index.html"
   },
   {
-    "revision": "14d1507656dee57137d0",
-    "url": "/jupiter/static/css/main.f3e2b5c3.chunk.css"
+    "revision": "0c48103a6ec7a4a6a286",
+    "url": "/jupiter/static/css/main.5f45ee77.chunk.css"
   },
   {
     "revision": "aca6dc853fd0e93d9759",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/jupiter/static/js/2.2aef1c1e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "14d1507656dee57137d0",
-    "url": "/jupiter/static/js/main.7fe5ce45.chunk.js"
+    "revision": "0c48103a6ec7a4a6a286",
+    "url": "/jupiter/static/js/main.3d608ef3.chunk.js"
   },
   {
     "revision": "d15243fc1506ff95e327",
@@ -66,6 +66,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "900f0f194f912eb2ea56679f4f7f66f0",
     "url": "/jupiter/static/media/btnTransArrow.900f0f19.svg"
+  },
+  {
+    "revision": "811e3e7ee5c54b5a22fb3a5a67fd4b38",
+    "url": "/jupiter/static/media/icon_ellipsis.811e3e7e.svg"
   },
   {
     "revision": "8c07d67ba6cfcd1d9589de3093833916",
