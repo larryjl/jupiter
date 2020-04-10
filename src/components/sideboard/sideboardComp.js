@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Sideboard.css";
+import "./sideboard.css";
 import Translation from "../translation/translationComp";
 import Rotation from "../rotation/rotationComp";
 import Reflection from "../reflection/reflectionComp";
@@ -7,7 +7,7 @@ import { ReactComponent as TranslationSvg } from "../../images/btnTrans.svg";
 import { ReactComponent as RotationSvg } from "../../images/btnRot.svg";
 import { ReactComponent as ReflectionSvg } from "../../images/btnReflect.svg";
 
-function Sideboard(props) {
+function sideboard(props) {
   const [tab, setTab] = useState(null);
 
   function handleClick(e) {
@@ -93,4 +93,4 @@ function Sideboard(props) {
   );
 }
 
-export default Sideboard;
+export default sideboard;

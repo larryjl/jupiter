@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { Grid } from "./components/grid/gridComp";
-import Sideboard from "./components/Sideboard/SideboardComp";
+import sideboard from "./components/sideboard/sideboardComp";
 import { Circle } from "./components/shapes/circleComp.js";
 import { Square } from "./components/shapes/squareComp.js";
 import { Triangle } from "./components/shapes/triangleComp.js";
-// import { Heart } from "./components/shapes/heartComp.js";
 import { Star } from "./components/shapes/starComp.js";
 import { Rectangle } from "./components/shapes/rectangleComp.js";
 import { CallStack, CallCard } from './components/callStack/callStack';
@@ -291,7 +290,7 @@ function Game(props) {
         {playerComp}
       </div>
       <div className="controllerWrapper">
-        <Sideboard
+        <sideboard
           translate={translate}
           rotate={rotate}
           reflect={reflect}
