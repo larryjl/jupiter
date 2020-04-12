@@ -27,11 +27,11 @@ This app is currently deployed at:
 
 ## Authors
 
-* **Lawrence Lee**
-* **Mohsen Aghajani**
-* **Lucas Seeger**
-* **Jen Currier**
-* **Dale Oldham** (Icons)
+* [Lawrence Lee](https://github.com/J-Currier/cohort3)  
+* [Mohsen Aghajani](https://github.com/mohsenagi/cohort3)  
+* [Lucas Seeger](https://github.com/Zapfly/cohort3)  
+* [Jen Currier](https://github.com/J-Currier/cohort3)  
+* [Dale Oldham](https://github.com/SkyHook42) (Icons)  
 
 ## Acknowledgments
 
