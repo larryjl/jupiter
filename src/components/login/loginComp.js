@@ -13,21 +13,16 @@ export default function Login(props) {
   const [usernameMsg, setUsernameMsg] = useState("");
   const [passwordMsg, setPasswordMsg] = useState("");
   const [loading, setLoading] = useState(true);
-  const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in...");
+  const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in.");
   const [gapiLoaded, setGapiLoaded] = useState(false);
 
-  // Loading Icon
-  useEffect(() => {
-    setLoading(loginMsg.includes("...") ? true : false );
-    setLoginMsg(prev => prev.replace("...", "."))
-  }, [loginMsg]);
-
-  // Display in case sign in never loads
+  // // Display in case sign in never loads
   const gapiLoadedRef = useRef(false);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (gapiLoadedRef.current === false) {
         setLoginMsg("Google Sign-in is temporarily unavailable.");
+        setLoading(false);
       }
     }, 5000);
     return () => clearTimeout(timer)
@@ -42,6 +37,7 @@ export default function Login(props) {
       setGapiLoaded(true);
       gapiLoadedRef.current = true;
       setLoginMsg("");
+      setLoading(false);
     }
     // // initialize google api
     await window.gapi.load("auth2", async () => {
@@ -131,6 +127,7 @@ export default function Login(props) {
       aud === keys.clientId + ".apps.googleusercontent.com";
     if (!checkIssuer(response.iss) || !checkAud(response.aud)) {
       setLoginMsg("Google verification failed.");
+      setLoading(false);
     } else {
       return response.sub; // Google ID
     }
@@ -157,6 +154,7 @@ export default function Login(props) {
 
   function handleFailure() {
     setLoginMsg("Google sign-in failed.")
+    setLoading(false);
     setIsSignedIn(false);
   }
 
