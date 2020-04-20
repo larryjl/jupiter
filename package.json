@@ -49,13 +49,35 @@
       "./src/**/*.js"
     ]
   },
-  "description": "See the deployed build at https://larryjl.github.io/jupiter/",
-  "main": "index.js",
+  "description": "Education math transformations web game for students age 11-15.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/larryjl/jupiter.git"
+    "url": "https://github.com/larryjl/jupiter.git"
   },
-  "author": "",
+  "author": { 
+    "name" : "Lawrence Lee",
+    "email" : "lawrence.lee.linked@gmail.com",
+    "url" : "https://github.com.larryjl"
+  },
+  "contributors": [
+    { 
+      "name" : "Lawrence Lee",
+      "email" : "lawrence.lee.linked@gmail.com",
+      "url" : "https://github.com.larryjl"
+    },
+    { 
+      "name" : "Mohsen Aghaja",
+      "url" : "https://github.com/mohsenagi"
+    },
+    { 
+      "name" : "Lucas Seeger",
+      "url" : "https://github.com/Zapfly"
+    },
+    { 
+      "name" : "Jen Currier",
+      "url" : "https://github.com/J-Currier"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/larryjl/jupiter/issues"
