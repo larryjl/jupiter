@@ -6,7 +6,7 @@ import Sideboard from "./components/sideboard/sideboardComp";
 import { Circle } from "./components/shapes/circleComp.js";
 import { Square } from "./components/shapes/squareComp.js";
 import { Triangle } from "./components/shapes/triangleComp.js";
-import { Star } from "./components/shapes/starComp.js";
+// import { Star } from "./components/shapes/starComp.js";
 import { Rectangle } from "./components/shapes/rectangleComp.js";
 import { CallStack, CallCard } from './components/callStack/callStack';
 import Login from "./components/login/loginComp";
@@ -189,7 +189,7 @@ function Game(props) {
     square: Square,
     triangle: Triangle,
     rectangle: Rectangle,
-    star: Star
+    // star: Star
     // heart: Heart
   };
   const ShapeComp = shapeCompsObj[shape];
