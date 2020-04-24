@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, render_template
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 
 from security import authenticate, identity
@@ -21,6 +21,9 @@ attempts = [{"username": "lawrence", "id": 1}]
 
 
 class Player(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument("date", type=object, help="This field cannot blank.")
+
     @jwt_required()
     def get(self, username):
         player = next(
@@ -34,14 +37,15 @@ class Player(Resource):
                 {"message": f"Username: {username} already exists."},
                 400,
             )  # Bad Request
-        requestData = request.get_json(silent=False)
+
+        data = Player.parser.parse_args()
         player = {
             "username": username,
         }
         players.append(player)
         return jsonify(player), 201  # Created
 
-    def delete(self, name):
+    def delete(self, username):
         if (
             next(filter(lambda player: player["username"] == username, players), None)
             == None
@@ -53,6 +57,18 @@ class Player(Resource):
         global players
         players = list(filter(lambda player: player["username"] != name, players))
         return {"message": f"Username: {username} deleted."}, 200
+
+    def put(self, username):
+        data = Player.parser.parse_args()
+        player = next(filter(lambda x: x["username"] == username, players), None)
+        if player is None:
+            player = {
+                "username": username,
+            }
+            players.append(player)
+        else:
+            player.update(data)
+        return player
 
 
 class Attempt(Resource):
