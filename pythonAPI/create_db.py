@@ -13,7 +13,9 @@ conn.autocommit = True
 cur = conn.cursor()
 
 cur.execute(
-    "SELECT EXISTS(SELECT 1 FROM pg_catalog.pg_database WHERE datname = %s);",
+    """SELECT EXISTS(
+        SELECT 1 FROM pg_catalog.pg_database WHERE datname = %s
+    );""",
     (pg_config["dbname"],),
 )
 if not cur.fetchone()[0]:
@@ -34,80 +36,53 @@ conn = psycopg2.connect(
 conn.autocommit = True
 cur = conn.cursor()
 
-cur.execute(
-    """SELECT EXISTS(
-        SELECT 1 FROM information_schema.tables WHERE table_name = %s
-    );""",
-    (pg_config["user_table"],),
-)
-if not cur.fetchone()[0]:
+for (table, columns) in pg_config["tables"].items():
+
     cur.execute(
-        sql.SQL("CREATE TABLE {table} ({columns})").format(
-            table=sql.Identifier(pg_config["schema"], pg_config["user_table"]),
-            columns=sql.SQL(", ").join(
-                [
-                    sql.SQL(
-                        "{} {} PRIMARY KEY"
-                        if (column["constraint"] == "PRIMARY KEY")
-                        else (
-                            "{} {} NOT NULL"
-                            if (column["constraint"] == "NOT NULL UNIQUE")
-                            else (
-                                "{} {} NOT NULL UNIQUE"
-                                if (column["constraint"] == "NOT NULL")
-                                else (
-                                    "UNIQUE"
-                                    if (column["constraint"] == "UNIQUE")
-                                    else "{} {}"
-                                )
-                            )
-                        )
-                    ).format(
-                        sql.Identifier(column["name"]), sql.Identifier(column["type"])
-                    )
-                    for column in pg_config["user_columns"]
-                ]
-            ),
-        )
+        """SELECT EXISTS(
+            SELECT 1 FROM information_schema.tables WHERE table_name = %s
+        );""",
+        (table,),
     )
 
-
-cur.execute(
-    """SELECT EXISTS(
-        SELECT 1 FROM information_schema.tables WHERE table_name = %s
-    );""",
-    (pg_config["attempt_table"],),
-)
-if not cur.fetchone()[0]:
-    cur.execute(
-        sql.SQL("CREATE TABLE {table} ({columns})").format(
-            table=sql.Identifier(pg_config["schema"], pg_config["attempt_table"]),
-            columns=sql.SQL(", ").join(
-                [
-                    sql.SQL(
-                        "{} {} PRIMARY KEY"
-                        if (column["constraint"] == "PRIMARY KEY")
-                        else (
-                            "{} {} NOT NULL"
-                            if (column["constraint"] == "NOT NULL UNIQUE")
+    if not cur.fetchone()[0]:
+        cur.execute(
+            sql.SQL("CREATE TABLE {table} ({columns})").format(
+                table=sql.Identifier(pg_config["schema"], table),
+                columns=sql.SQL(", ").join(
+                    [
+                        sql.SQL(
+                            "{} {} PRIMARY KEY"
+                            if (column["constraint"] == "PRIMARY KEY")
                             else (
                                 "{} {} NOT NULL UNIQUE"
-                                if (column["constraint"] == "NOT NULL")
+                                if (column["constraint"] == "NOT NULL UNIQUE")
                                 else (
-                                    "UNIQUE"
-                                    if (column["constraint"] == "UNIQUE")
-                                    else "{} {}"
+                                    "{} {} NOT NULL"
+                                    if (column["constraint"] == "NOT NULL")
+                                    else (
+                                        "{} {} UNIQUE"
+                                        if (column["constraint"] == "UNIQUE")
+                                        else (
+                                            "{} {} NOT NULL DEFAULT (now() AT TIME ZONE 'MST')"
+                                            if (
+                                                column["constraint"]
+                                                == "NOT NULL DEFAULT (now() AT TIME ZONE 'MST')"
+                                            )
+                                            else "{} {}"
+                                        )
+                                    )
                                 )
                             )
+                        ).format(
+                            sql.Identifier(column["name"]),
+                            sql.Identifier(column["type"]),
                         )
-                    ).format(
-                        sql.Identifier(column["name"]), sql.Identifier(column["type"])
-                    )
-                    for column in pg_config["attempt_columns"]
-                ]
-            ),
+                        for column in columns
+                    ]
+                ),
+            )
         )
-    )
 
 
 cur.close()
