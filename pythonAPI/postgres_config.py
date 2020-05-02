@@ -6,20 +6,35 @@ pg_config = {
     "maintenance_db": "postgres",
     "dbname": "jupiter",
     "tables": {
-        "user": [
-            {"name": "id", "type": "serial", "constraint": "PRIMARY KEY",},
-            {"name": "username", "type": "varchar", "constraint": "NOT NULL UNIQUE",},
-            {"name": "password", "type": "varchar", "constraint": "NOT NULL"},
-        ],
-        "attempt": [
-            {"name": "id", "type": "serial", "constraint": "PRIMARY KEY",},
-            {"name": "username", "type": "varchar", "constraint": "NOT NULL",},
-            {
-                "name": "created",
-                "type": "timestamp",
-                "constraint": "NOT NULL DEFAULT (now() AT TIME ZONE 'MST')",
-            },
-        ],
+        "user": {
+            "table": "user",
+            "columns": [
+                {"name": "id", "type": "serial", "constraint": "PRIMARY KEY",},
+                {
+                    "name": "username",
+                    "type": "varchar",
+                    "constraint": "NOT NULL UNIQUE",
+                },
+                {"name": "password", "type": "varchar", "constraint": "NOT NULL"},
+                {
+                    "name": "created",
+                    "type": "timestamp",
+                    "constraint": "NOT NULL DEFAULT (now() AT TIME ZONE 'MST')",
+                },
+            ],
+        },
+        "attempt": {
+            "table": "attempt",
+            "columns": [
+                {"name": "id", "type": "serial", "constraint": "PRIMARY KEY",},
+                {"name": "username", "type": "varchar", "constraint": "NOT NULL",},
+                {
+                    "name": "created",
+                    "type": "timestamp",
+                    "constraint": "NOT NULL DEFAULT (now() AT TIME ZONE 'MST')",
+                },
+            ],
+        },
     },
     "user_table": "user",
     "user_columns": [
