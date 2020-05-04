@@ -12,6 +12,19 @@ class Attempt(Resource):
     # )
 
     @jwt_required()
+    def get(self, username):
+        try:
+            attempts = [
+                attempt.json()
+                for attempt in AttemptModel.query.filter_by(username=username).all()
+            ]
+        except:
+            return {"message": "An error occurred finding the attempts."}, 500
+        if not attempts:
+            return {"message": "No attempts found."}, 404
+        return {"attempts": attempts}, 200
+
+    @jwt_required()
     def post(self, username):
         # data = Attempt.parser.parse_args()
 
