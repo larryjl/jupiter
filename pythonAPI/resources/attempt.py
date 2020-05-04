@@ -24,7 +24,7 @@ class Attempt(Resource):
             return {"message": "A user with that username does not exist."}, 404
 
         try:
-            AttemptModel.insert(username)
+            AttemptModel(username).save_to_db()
             return {"message": "Attempt created."}, 201
         except:
             return {"message": "An error occurred posting the attempt."}, 500
@@ -35,7 +35,7 @@ class AttemptList(Resource):
     # @jwt_required()
     def get(self):
         try:
-            attempts = AttemptModel.find()
+            attempts = [attempt.json() for attempt in AttemptModel.query.all()]
         except:
             return {"message": "An error occurred finding the attempts."}, 500
         if not attempts:

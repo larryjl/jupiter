@@ -1,74 +1,42 @@
-from queries import tables, columns, connect, select, insert, update
+from db import db
 
 
-class UserModel:
-    def __init__(self, id_, username, password, created):
-        self.id = id_
+class UserModel(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), nullable=False, unique=True, index=True)
+    password = db.Column(db.String(80), nullable=False)
+    created = db.Column(
+        db.DateTime(timezone=False),
+        nullable=False,
+        default=db.func.timezone("MST", db.func.current_timestamp()),
+    )
+    attempts = db.relationship("AttemptModel", lazy="dynamic")
+
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.created = created
+
+    def json(self):
+        return {
+            "username": self.username,
+            "password": self.password,
+            "attempts": [attempt.json() for attempt in self.attempts.all()],
+        }
 
     @classmethod
     def find_by_username(cls, username):
-
-        (conn, cur) = connect()
-
-        select(cur, tables["user"], columns["user"][1], username)
-        row = cur.fetchone()
-
-        cur.close()
-        conn.close()
-
-        if row:
-            return cls(*row)
-        else:
-            return None
+        return cls.query.filter_by(username=username).first()
 
     @classmethod
     def find_by_id(cls, id_):
+        return cls.query.filter_by(id=id_).first()
 
-        (conn, cur) = connect()
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
-        select(cur, tables["user"], columns["user"][0], id_)
-        row = cur.fetchone()
-
-        cur.close()
-        conn.close()
-
-        if row:
-            return cls(*row)
-        else:
-            return None
-
-    @classmethod
-    def insert(cls, data):
-
-        (conn, cur) = connect()
-        insert(
-            cur,
-            tables["user"],
-            columns["user_input"],
-            (data["username"], data["password"],),
-        )
-
-        conn.commit()
-        cur.close()
-        conn.close()
-
-    @classmethod
-    def update_password(cls, data):
-
-        (conn, cur) = connect()
-
-        update(
-            cur,
-            tables["user"],
-            columns["user"][2],
-            data["password"],
-            columns["user"][1],
-            data["username"],
-        )
-
-        conn.commit()
-        cur.close()
-        conn.close()
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()

@@ -1,53 +1,28 @@
-from queries import tables, columns, connect, select, insert, update
-from datetime import datetime
+from db import db
 
 
-class AttemptModel:
-    def __init__(self, id_, username, created):
-        self.id = id_
+class AttemptModel(db.Model):
+    __tablename__ = "attempt"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), db.ForeignKey("users.id"), nullable=False)
+    created = db.Column(
+        db.DateTime(timezone=False),
+        nullable=False,
+        default=db.func.timezone("MST", db.func.current_timestamp()),
+    )
+    users = db.relationship("UserModel")
+
+    def __init__(self, username):
         self.username = username
-        self.created = created
 
-    @classmethod
-    def find(cls, username=None):
-        (conn, cur) = connect()
+    def json(self):
+        return {"username": self.username}
 
-        select(
-            cur, tables["attempt"], column["attempt"][1] if username else None, username
-        )
-        query_result = cur.fetchall()
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
-        cur.close()
-        conn.close()
-
-        if not query_result:
-            return None
-
-        attempts = [
-            {
-                key: value
-                for (key, value) in list(
-                    zip(
-                        columns["attempt"],
-                        [
-                            value.strftime("%Y-%m-%d %H:%M:%S")
-                            if isinstance(value, datetime)
-                            else value
-                            for value in row
-                        ],
-                    )
-                )
-            }
-            for row in query_result
-        ]
-        return attempts
-
-    @classmethod
-    def insert(cls, username):
-        (conn, cur) = connect()
-
-        insert(cur, tables["attempt"], columns["attempt_input"], (username,))
-
-        conn.commit()
-        cur.close()
-        conn.close()
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()

@@ -26,7 +26,7 @@ class UserRegister(Resource):
             return {"message": "A user with that username already exists."}, 400
 
         try:
-            UserModel.insert(data)
+            UserModel(data["username"], data["password"]).save_to_db()
             return {"message": "User created."}, 201
         except:
             return {"message": "An error occurred inserting the user."}, 500
@@ -37,19 +37,17 @@ class UserRegister(Resource):
         data = UserRegister.parser.parse_args()
 
         try:
-            existing_user = UserModel.find_by_username(data["username"])
+            user = UserModel.find_by_username(data["username"])
         except:
             return {"message": "An error occurred searching the user."}, 500
 
-        if existing_user:
-            try:
-                UserModel.update_password(data)
-                return {"message": "User updated."}, 201
-            except:
-                return {"message": "An error occurred updating the user."}, 500
+        if user:
+            user.password = data["password"]
         else:
-            try:
-                UserModel.insert(data)
-                return {"message": "User created."}, 201
-            except:
-                return {"message": "An error occurred inserting the user."}, 500
+            user = UserModel(**data)
+
+        try:
+            user.save_to_db()
+            return {"message": "User updated."}, 201
+        except:
+            return {"message": "An error occurred inserting the user."}, 500
