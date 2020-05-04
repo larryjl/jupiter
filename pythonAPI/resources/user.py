@@ -13,7 +13,6 @@ class UserRegister(Resource):
         "password", type=str, required=True, help="This field cannot be blank."
     )
 
-    # @jwt_required()
     def post(self):
 
         data = UserRegister.parser.parse_args()
@@ -32,7 +31,7 @@ class UserRegister(Resource):
         except:
             return {"message": "An error occurred inserting the user."}, 500
 
-    # @jwt_required()
+    @jwt_required()
     def put(self):
 
         data = UserRegister.parser.parse_args()

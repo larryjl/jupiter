@@ -43,10 +43,10 @@ class AttemptModel:
         return attempts
 
     @classmethod
-    def insert(cls, data):
+    def insert(cls, username):
         (conn, cur) = connect()
 
-        insert(cur, tables["attempt"], columns["attempt_input"], (data["username"],))
+        insert(cur, tables["attempt"], columns["attempt_input"], (username,))
 
         conn.commit()
         cur.close()

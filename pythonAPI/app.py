@@ -4,7 +4,7 @@ from flask_jwt import JWT
 
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.attempt import Attempt
+from resources.attempt import Attempt, AttemptList
 
 app = Flask(__name__)
 app.secret_key = "mykey"
@@ -18,8 +18,9 @@ def home():
     return render_template("index.html")
 
 
-api.add_resource(Attempt, "/attempt")
 api.add_resource(UserRegister, "/register")
+api.add_resource(AttemptList, "/attempts")
+api.add_resource(Attempt, "/attempt/username=<string:username>")
 
 
 if __name__ == "__main__":
