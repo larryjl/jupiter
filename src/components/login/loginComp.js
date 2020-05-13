@@ -2,8 +2,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./login.css";
 import { keys } from "../../config.js";
-import { fetchJson, tokenInfo } from "../../scripts/fetch";
 import loadScript from "../../scripts/loadScript";
+import {
+  verifyGToken,
+  getPlayerId,
+  getLevel,
+  validateUsername,
+  validatePassword
+} from "./loginfunctions"
 import LoadIcon from "../loadIcon/loadIcon";
 
 export default function Login(props) {
@@ -63,45 +69,11 @@ export default function Login(props) {
     });
   }
 
-  async function getPlayerId(userObject) {
-    let jsonPlayer;
-    try {
-      if (userObject.type !== "guest") {
-        // // todo: login password authentication
-        jsonPlayer = await fetchJson("Players/=" + userObject.userName, "GET");
-      }
-      if (userObject.type === "guest" || !jsonPlayer.id) {
-        jsonPlayer = await fetchJson("Players", "POST", userObject);
-      }
-      if (jsonPlayer.id) {
-        return jsonPlayer.id;
-      }
-    } catch (error) {
-      setOnline(false);
-      return;
-    }
-  }
-
-  async function getLevel(online, userType, playerId) {
-    if (!online || userType === "guest") {
-      return 1;
-    } else {
-      try {
-        const jsonLevel = await fetchJson(
-          "Attempts/LastLevel/PlayerId=" + playerId,
-          "GET"
-        );
-        return jsonLevel[0].levelId;
-      } catch (error) {
-        return 1;
-      }
-    }
-  }
-
   async function startSession(userObject) {
     const playerId = await getPlayerId(userObject);
     if (!playerId) {
       setPasswordMsg("Login Failed.")
+      setOnline(false)
       return;
     }
 
@@ -118,38 +90,19 @@ export default function Login(props) {
   }
 
   // --- Google Login ---
-  async function verifyToken(idToken) {
-    // // verify from google api tokeninfo (not via backend)
-    let response = await tokenInfo(idToken);
-    const checkIssuer = iss =>
-      iss === "accounts.google.com" || iss === "https://accounts.google.com";
-    const checkAud = aud =>
-      aud === keys.clientId + ".apps.googleusercontent.com";
-    if (!checkIssuer(response.iss) || !checkAud(response.aud)) {
-      setLoginMsg("Google verification failed.");
-      setLoading(false);
-    } else {
-      return response.sub; // Google ID
-    }
-  }
-
   async function handleSuccess(googleUser) {
     setLoginMsg("Signing in...");
     const idToken = googleUser.getAuthResponse().id_token;
-    // // get profile info
-    // const profile = googleUser.getBasicProfile();
-    // const googleId = profile.getId();
-    // const name = profile.getGivenName();
-    // const image = profile.getImageUrl();
-    // const email = profile.getEmail();
-
-    const googleId = await verifyToken(idToken);
-    if (googleId) {
-      await startSession({
-        userName: googleId,
-        type: "google"
-      });
+    const googleId = await verifyGToken(idToken);
+    if (!googleId) {
+      setLoginMsg("Google verification failed.");
+      setLoading(false);
+      return
     }
+    await startSession({
+      userName: googleId,
+      type: "google"
+    });
   }
 
   function handleFailure() {
@@ -157,40 +110,23 @@ export default function Login(props) {
     setLoading(false);
     setIsSignedIn(false);
   }
-
-  function handleGLoginClick() {
-  }
   // ---
 
   // --- Regular Login ---
-  function validateUsername(username) {
-    let valid =
-      username.length >= 6 &&
-      username.length <= 128 &&
-      !username.includes(" ") &&
-      /^[a-zA-Z]/.test(username.charAt(0)) &&
-      username.indexOf("guest") !== 0;
-    if (!valid) {
+  function handleLogin() {
+    setUsernameMsg("");
+    setPasswordMsg("");
+    let validUsername = validateUsername(username)
+    if (!validUsername) {
       setUsernameMsg(
         "Must be 6 or more characters, starting with a letter, with no spaces."
       );
     }
-    return valid;
-  }
-
-  function validatePassword(password) {
-    let valid =
-      password.length >= 8 && password.length <= 128 && !password.includes(" ");
-    if (!valid) {
+    let validPassword = validatePassword(password)
+    if (!validPassword) {
       setPasswordMsg("Must be 8 or more characters, with no spaces.");
     }
-    return valid;
-  }
-
-  function handleLogin() {
-    setUsernameMsg("");
-    setPasswordMsg("");
-    if (validateUsername(username) && validatePassword(password)) {
+    if (validUsername && validPassword) {
       startSession({
         userName: username,
         type: "login",
@@ -208,7 +144,7 @@ export default function Login(props) {
   }
   // --- 
 
-  // --- Guest Login
+  // --- Guest Login ---
   function handleGuest() {
     const userObject = {
       userName: `guest${Date.now()}${Math.random()}`, // somewhat random unique id. todo: npm uuid
@@ -241,66 +177,66 @@ export default function Login(props) {
     </div>
   );
 
-  return !online ? (
-    offlineLogin
-  ) : (
-    <div id="login" className="overlay">
-      <div className="loginItem">
-        <label htmlFor="username" className="loginLabel">
-          {`Username: ${usernameMsg}`}
-        </label>
-        <input
-          type="text"
-          autoComplete="username"
-          id="username"
-          name="username"
-          key="username"
-          className="loginInput"
-          value={username}
-          onChange={handleUsername}
-        ></input>
-      </div>
-      <div className="loginItem">
-        <label htmlFor="password" className="loginLabel">
-          {`Password: ${passwordMsg}`}
-        </label>
-        <input
-          type="password"
-          autoComplete="current-password"
-          id="password"
-          name="password"
-          key="password"
-          className="loginInput"
-          value={password}
-          onChange={handlePassword}
-        ></input>
-      </div>
-      <button
-        id="loginBtn"
-        className="loginBtn"
-        key="loginBtn"
-        onClick={handleLogin}
-      >
-        Sign in
-      </button>
-      <button
-        id="guestBtn"
-        className="loginBtn"
-        key="guestBtn"
-        onClick={handleGuest}
-      >
-        Play as a Guest
-      </button>
-      <div className="loginItem">
-        {gapiLoaded &&
-          <button id="gLoginBtn" onClick={handleGLoginClick}></button>
-        }
-        <div className="loginLabel">
-          {loginMsg}{loading && <LoadIcon />}
+  return !online
+    ? offlineLogin
+    : (
+      <div id="login" className="overlay">
+        <div className="loginItem">
+          <label htmlFor="username" className="loginLabel">
+            {`Username: ${usernameMsg}`}
+          </label>
+          <input
+            type="text"
+            autoComplete="username"
+            id="username"
+            name="username"
+            key="username"
+            className="loginInput"
+            value={username}
+            onChange={handleUsername}
+          ></input>
+        </div>
+        <div className="loginItem">
+          <label htmlFor="password" className="loginLabel">
+            {`Password: ${passwordMsg}`}
+          </label>
+          <input
+            type="password"
+            autoComplete="current-password"
+            id="password"
+            name="password"
+            key="password"
+            className="loginInput"
+            value={password}
+            onChange={handlePassword}
+          ></input>
+        </div>
+        <button
+          id="loginBtn"
+          className="loginBtn"
+          key="loginBtn"
+          onClick={handleLogin}
+        >
+          Sign in
+    </button>
+        <button
+          id="guestBtn"
+          className="loginBtn"
+          key="guestBtn"
+          onClick={handleGuest}
+        >
+          Play as a Guest
+    </button>
+        <div className="loginItem">
+          {gapiLoaded &&
+            <button id="gLoginBtn"></button>
+          }
+          <div className="loginLabel">
+            {loginMsg}{loading && <LoadIcon />}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 async function googleSignOut() {
