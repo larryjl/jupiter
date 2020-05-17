@@ -1,6 +1,6 @@
 
 import { fetchJson, tokenInfo } from "../../scripts/fetch";
-import { keys } from "../../config.js";
+import { clientIds } from "../../config.js";
 
 async function getPlayerId(userObject) {
   let jsonPlayer;
@@ -42,7 +42,7 @@ async function verifyGToken(idToken) {
   const checkIssuer = iss =>
     iss === "accounts.google.com" || iss === "https://accounts.google.com";
   const checkAud = aud =>
-    aud === keys.clientId + ".apps.googleusercontent.com";
+    aud === clientIds.google + ".apps.googleusercontent.com";
   if (!checkIssuer(response.iss) || !checkAud(response.aud)) {
     return false
   }

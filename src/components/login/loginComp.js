@@ -1,15 +1,9 @@
 /* global gapi */ // Do not remove. Indicates predefined global variable.
 import React, { useState, useEffect, useRef } from "react";
 import "./login.css";
-import { keys } from "../../config.js";
+import { clientIds } from "../../config.js";
 import loadScript from "../../scripts/loadScript";
-import {
-  verifyGToken,
-  getPlayerId,
-  getLevel,
-  validateUsername,
-  validatePassword
-} from "./loginfunctions"
+import loginFxs from "./loginFunctions"
 import LoadIcon from "../loadIcon/loadIcon";
 
 export default function Login(props) {
@@ -22,7 +16,7 @@ export default function Login(props) {
   const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in.");
   const [gapiLoaded, setGapiLoaded] = useState(false);
 
-  // // Display in case sign in never loads
+  // --- Display in case sign in never loads
   const gapiLoadedRef = useRef(false);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,6 +27,7 @@ export default function Login(props) {
     }, 5000);
     return () => clearTimeout(timer)
   }, []);
+  // ---
 
   useEffect(() => {
     loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
@@ -45,10 +40,11 @@ export default function Login(props) {
       setLoginMsg("");
       setLoading(false);
     }
+
     // // initialize google api
     await window.gapi.load("auth2", async () => {
       await gapi.auth2.init({
-        client_id: keys.clientId + ".apps.googleusercontent.com",
+        client_id: clientIds.google + ".apps.googleusercontent.com",
         fetch_basic_profile: false,
         scope: "profile"
       });
@@ -70,7 +66,7 @@ export default function Login(props) {
   }
 
   async function startSession(userObject) {
-    const playerId = await getPlayerId(userObject);
+    const playerId = await loginFxs.getPlayerId(userObject);
     if (!playerId) {
       setPasswordMsg("Login Failed.")
       setOnline(false)
@@ -83,7 +79,7 @@ export default function Login(props) {
       type: userObject.type
     });
 
-    const level = await getLevel(online, userObject.type, playerId);
+    const level = await loginFxs.getLevel(online, userObject.type, playerId);
     setCurrentLevel(level);
 
     setIsSignedIn(true); // component will unmount
@@ -93,7 +89,7 @@ export default function Login(props) {
   async function handleSuccess(googleUser) {
     setLoginMsg("Signing in...");
     const idToken = googleUser.getAuthResponse().id_token;
-    const googleId = await verifyGToken(idToken);
+    const googleId = await loginFxs.verifyGToken(idToken);
     if (!googleId) {
       setLoginMsg("Google verification failed.");
       setLoading(false);
@@ -116,13 +112,13 @@ export default function Login(props) {
   function handleLogin() {
     setUsernameMsg("");
     setPasswordMsg("");
-    let validUsername = validateUsername(username)
+    let validUsername = loginFxs.validateUsername(username)
     if (!validUsername) {
       setUsernameMsg(
         "Must be 6 or more characters, starting with a letter, with no spaces."
       );
     }
-    let validPassword = validatePassword(password)
+    let validPassword = loginFxs.validatePassword(password)
     if (!validPassword) {
       setPasswordMsg("Must be 8 or more characters, with no spaces.");
     }
