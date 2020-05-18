@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -17,11 +15,15 @@
 .env.development.local
 .env.test.local
 .env.production.local
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Graph Hopper API
 /Graph Hopper API/Graph Hopper/appsettings.json
 /Graph Hopper API/.vs
 /Graph Hopper API/Graph Hopper/bin
 /Graph Hopper API/Graph Hopper/obj
+
+# Python API
+pythonAPI/.vscode/settings.json
