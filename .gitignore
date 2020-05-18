@@ -20,10 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Graph Hopper API
-/Graph Hopper API/Graph Hopper/appsettings.json
-/Graph Hopper API/.vs
-/Graph Hopper API/Graph Hopper/bin
-/Graph Hopper API/Graph Hopper/obj
-
-# Python API
-pythonAPI/.vscode/settings.json
+/dotnetAPI/Graph Hopper/appsettings.json
+/dotnetAPI/.vs
+/dotnetAPI/Graph Hopper/bin
+/dotnetAPI/Graph Hopper/obj
