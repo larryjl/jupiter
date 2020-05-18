@@ -1,5 +1,5 @@
 /* global gapi */ // Do not remove. Indicates predefined global variable.
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./login.css";
 import { clientIds } from "../../config.js";
 import loadScript from "../../scripts/loadScript";
@@ -16,24 +16,51 @@ export default function Login(props) {
   const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in.");
   const [gapiLoaded, setGapiLoaded] = useState(false);
 
-  // --- Display in case sign in never loads
-  const gapiLoadedRef = useRef(false);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (gapiLoadedRef.current === false) {
-        setLoginMsg("Google Sign-in is temporarily unavailable.");
+
+  // --- Google Login ---
+  const startSession = useCallback(async (userObject) => {
+    const playerId = await loginFxs.getPlayerId(userObject);
+    if (!playerId) {
+      setPasswordMsg("Login Failed.")
+      setOnline(false)
+      return;
+    }
+
+    setUser({
+      userName: userObject.userName,
+      id: playerId,
+      type: userObject.type
+    });
+
+    const level = await loginFxs.getLevel(online, userObject.type, playerId);
+    setCurrentLevel(level);
+
+    setIsSignedIn(true); // component will unmount
+  }, [online, setCurrentLevel, setIsSignedIn, setOnline, setUser]);
+
+  const gapiSetup = useCallback(async () => {
+
+    async function handleSuccess(googleUser) {
+      setLoginMsg("Signing in...");
+      const idToken = googleUser.getAuthResponse().id_token;
+      const googleId = await loginFxs.verifyGToken(idToken);
+      if (!googleId) {
+        setLoginMsg("Google verification failed.");
         setLoading(false);
+        return
       }
-    }, 5000);
-    return () => clearTimeout(timer)
-  }, []);
-  // ---
+      await startSession({
+        userName: googleId,
+        type: "google"
+      });
+    }
 
-  useEffect(() => {
-    loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
-  }, []);
+    function handleFailure() {
+      setLoginMsg("Google sign-in failed.")
+      setLoading(false);
+      setIsSignedIn(false);
+    }
 
-  async function gapiSetup() {
     if (window.gapi) {
       setGapiLoaded(true);
       gapiLoadedRef.current = true;
@@ -63,49 +90,19 @@ export default function Login(props) {
       };
       gapi.signin2.render("gLoginBtn", options);
     });
-  }
+  }, [setIsSignedIn, startSession]);
 
-  async function startSession(userObject) {
-    const playerId = await loginFxs.getPlayerId(userObject);
-    if (!playerId) {
-      setPasswordMsg("Login Failed.")
-      setOnline(false)
-      return;
-    }
-
-    setUser({
-      userName: userObject.userName,
-      id: playerId,
-      type: userObject.type
-    });
-
-    const level = await loginFxs.getLevel(online, userObject.type, playerId);
-    setCurrentLevel(level);
-
-    setIsSignedIn(true); // component will unmount
-  }
-
-  // --- Google Login ---
-  async function handleSuccess(googleUser) {
-    setLoginMsg("Signing in...");
-    const idToken = googleUser.getAuthResponse().id_token;
-    const googleId = await loginFxs.verifyGToken(idToken);
-    if (!googleId) {
-      setLoginMsg("Google verification failed.");
-      setLoading(false);
-      return
-    }
-    await startSession({
-      userName: googleId,
-      type: "google"
-    });
-  }
-
-  function handleFailure() {
-    setLoginMsg("Google sign-in failed.")
-    setLoading(false);
-    setIsSignedIn(false);
-  }
+  const gapiLoadedRef = useRef(false);
+  useEffect(() => {
+    loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
+    const timer = setTimeout(() => {
+      if (gapiLoadedRef.current === false) {
+        setLoginMsg("Google Sign-in is temporarily unavailable.");
+        setLoading(false);
+      }
+    }, 5000);
+    return (() => clearTimeout(timer));
+  }, [gapiSetup]);
   // ---
 
   // --- Regular Login ---
