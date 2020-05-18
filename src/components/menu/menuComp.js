@@ -1,4 +1,3 @@
-/* global gapi */ // Do not remove. indicates predefined global variable.
 import React, { useState } from "react";
 import "./menu.css";
 import { ReactComponent as MenuSvg } from "../..//images/Icon_menu.svg";
