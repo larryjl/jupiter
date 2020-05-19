@@ -13,6 +13,9 @@ flask-restful = "*"
 flask-jwt = "*"
 flask-sqlalchemy = "*"
 psycopg2 = "*"
+flask-cors = "*"
+waitress = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.6"
