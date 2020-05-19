@@ -11,7 +11,8 @@
     "node-fetch": "^2.6.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "^3.4.0"
+    "react-scripts": "^3.4.0",
+    "uuid": "^8.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -54,28 +55,28 @@
     "type": "git",
     "url": "https://github.com/larryjl/jupiter.git"
   },
-  "author": { 
-    "name" : "Lawrence Lee",
-    "email" : "lawrence.lee.linked@gmail.com",
-    "url" : "https://github.com.larryjl"
+  "author": {
+    "name": "Lawrence Lee",
+    "email": "lawrence.lee.linked@gmail.com",
+    "url": "https://github.com.larryjl"
   },
   "contributors": [
-    { 
-      "name" : "Lawrence Lee",
-      "email" : "lawrence.lee.linked@gmail.com",
-      "url" : "https://github.com.larryjl"
+    {
+      "name": "Lawrence Lee",
+      "email": "lawrence.lee.linked@gmail.com",
+      "url": "https://github.com.larryjl"
     },
-    { 
-      "name" : "Mohsen Aghaja",
-      "url" : "https://github.com/mohsenagi"
+    {
+      "name": "Mohsen Aghajani",
+      "url": "https://github.com/mohsenagi"
     },
-    { 
-      "name" : "Lucas Seeger",
-      "url" : "https://github.com/Zapfly"
+    {
+      "name": "Lucas Seeger",
+      "url": "https://github.com/Zapfly"
     },
-    { 
-      "name" : "Jen Currier",
-      "url" : "https://github.com/J-Currier"
+    {
+      "name": "Jen Currier",
+      "url": "https://github.com/J-Currier"
     }
   ],
   "license": "ISC",

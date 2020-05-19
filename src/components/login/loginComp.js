@@ -1,5 +1,6 @@
 /* global gapi */ // Do not remove. Indicates predefined global variable.
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import "./login.css";
 import { clientIds } from "../../config.js";
 import loadScript from "../../scripts/loadScript";
@@ -140,7 +141,7 @@ export default function Login(props) {
   // --- Guest Login ---
   function handleGuest() {
     const userObject = {
-      userName: `guest${Date.now()}${Math.random()}`, // somewhat random unique id. todo: npm uuid
+      userName: `guest-${uuidv4()}`,
       type: "guest"
     };
     if (online) {
