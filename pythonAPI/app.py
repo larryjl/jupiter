@@ -4,6 +4,7 @@ from flask_jwt import JWT
 from flask_cors import CORS
 from waitress import serve
 
+from config import secret_key
 from security import authenticate, identity
 from resources.user import UserRegister
 from resources.attempt import Attempt, AttemptList
@@ -21,7 +22,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 # disable flask_sqlalchemy tracker but keep sqlalchemy tracker
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.secret_key = "mykey"
+app.secret_key = secret_key
 cors = CORS(app, resources={r"/*": {"origins": "http://localhost:5000"}})
 api = Api(app)
 
