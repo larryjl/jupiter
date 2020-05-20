@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./menu.css";
 import { ReactComponent as MenuSvg } from "../..//images/Icon_menu.svg";
 import { fetchJson } from "../../scripts/fetch";
-import { googleSignOut } from "../login/loginComp";
+import { googleSignOut } from "../login/googleLoginComp";
 
 
 function countMatchingObjects(array, compareKey, matchValue, filter) {

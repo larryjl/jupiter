@@ -1,11 +1,9 @@
-/* global gapi */ // Do not remove. Indicates predefined global variable.
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState, useCallback } from "react";
 import "./login.css";
-import { clientIds } from "../../config.js";
-import loadScript from "../../scripts/loadScript";
-import loginFxs from "./loginFunctions"
+import loginFxs from "./loginFunctions";
 import LoadIcon from "../loadIcon/loadIcon";
+import GoogleLogin from "./googleLoginComp";
+import { googleSignOut } from "./googleLoginComp";
 
 export default function Login(props) {
   const { setIsSignedIn, setUser, setCurrentLevel, online, setOnline } = props;
@@ -15,10 +13,8 @@ export default function Login(props) {
   const [passwordMsg, setPasswordMsg] = useState("");
   const [loading, setLoading] = useState(true);
   const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in.");
-  const [gapiLoaded, setGapiLoaded] = useState(false);
 
 
-  // --- Google Login ---
   const startSession = useCallback(async (userObject) => {
     const playerId = await loginFxs.getPlayerId(userObject);
     if (!playerId) {
@@ -39,75 +35,26 @@ export default function Login(props) {
     setIsSignedIn(true); // component will unmount
   }, [online, setCurrentLevel, setIsSignedIn, setOnline, setUser]);
 
-  const gapiSetup = useCallback(async () => {
 
-    async function handleSuccess(googleUser) {
-      setLoginMsg("Signing in...");
-      const idToken = googleUser.getAuthResponse().id_token;
-      const googleId = await loginFxs.verifyGToken(idToken);
-      if (!googleId) {
-        setLoginMsg("Google verification failed.");
-        setLoading(false);
-        return
-      }
-      await startSession({
-        userName: googleId,
-        type: "google"
-      });
-    }
-
-    function handleFailure() {
-      setLoginMsg("Google sign-in failed.")
-      setLoading(false);
-      setIsSignedIn(false);
-    }
-
-    if (window.gapi) {
-      setGapiLoaded(true);
-      gapiLoadedRef.current = true;
-      setLoginMsg("");
-      setLoading(false);
-    }
-
-    // // initialize google api
-    await window.gapi.load("auth2", async () => {
-      await gapi.auth2.init({
-        client_id: clientIds.google + ".apps.googleusercontent.com",
-        fetch_basic_profile: false,
-        scope: "profile"
-      });
+  // --- Google Login ---
+  const successCallback = useCallback((googleId) => {
+    startSession({
+      userName: googleId,
+      type: "google"
     });
-
-    // // render google api button
-    window.gapi.load("signin2", () => {
-      const options = {
-        scope: "profile",
-        width: 300,
-        height: 50,
-        longtitle: true,
-        theme: "light",
-        onsuccess: handleSuccess,
-        onfailure: handleFailure
-      };
-      gapi.signin2.render("gLoginBtn", options);
-    });
-  }, [setIsSignedIn, startSession]);
-
-  const gapiLoadedRef = useRef(false);
-  useEffect(() => {
-    loadScript("gapi", "https://apis.google.com/js/platform.js", gapiSetup);
-    const timer = setTimeout(() => {
-      if (gapiLoadedRef.current === false) {
-        setLoginMsg("Google Sign-in is temporarily unavailable.");
-        setLoading(false);
-      }
-    }, 5000);
-    return (() => clearTimeout(timer));
-  }, [gapiSetup]);
-  // ---
+  }, [startSession])
+  // --- end Google Login ---
 
   // --- Regular Login ---
-  function handleLogin() {
+  function handleUsername(e) {
+    setUsername(e.target.value);
+  }
+
+  function handlePassword(e) {
+    setPassword(e.target.value);
+  }
+
+  function validateInputs(username, password) {
     setUsernameMsg("");
     setPasswordMsg("");
     let validUsername = loginFxs.validateUsername(username)
@@ -118,42 +65,83 @@ export default function Login(props) {
     }
     let validPassword = loginFxs.validatePassword(password)
     if (!validPassword) {
-      setPasswordMsg("Must be 8 or more characters, with no spaces.");
+      setPasswordMsg("Must be 6 or more characters, with no spaces.");
     }
-    if (validUsername && validPassword) {
-      startSession({
-        userName: username,
-        type: "login",
-        password: password
-      });
-    }
+    return (validUsername && validPassword);
   }
 
-  function handleUsername(e) {
-    setUsername(e.target.value);
+  async function handleRegister() {
+    setUsernameMsg("Registering new user.")
+    setLoading(true);
+    if (!validateInputs(username, password)) {
+      setLoading(false);
+      return;
+    }
+    let json = await loginFxs.register(username, password);
+    if (json.status) {
+      console.log(json)
+      switch (json.status) {
+        case 400:
+          setLoading(false);
+          setUsernameMsg("That username is taken.");
+          return;
+        default:
+          setLoading(false);
+          setOnline(false);
+          return;
+      }
+    }
+    setUsernameMsg("User created.");
+    handleLogin();
   }
 
-  function handlePassword(e) {
-    setPassword(e.target.value);
+  async function handleLogin() {
+    setUsernameMsg("Logging in.")
+    setLoading(true);
+    let json = await loginFxs.authenticate(username, password);
+    let token = json.access_token
+    if (json.status) {
+      console.log(json)
+      switch (json.status) {
+        case 401:
+          setLoading(false);
+          setUsernameMsg("Wrong username or password.");
+          return;
+        default:
+          setLoading(false);
+          setOnline(false);
+          return;
+      }
+    }
+    setLoading(false);
+    startSession({
+      userName: username,
+      type: "login",
+      password: password,
+      token: token
+    });
   }
-  // --- 
+  // --- end Regular Login ---
 
   // --- Guest Login ---
-  function handleGuest() {
-    const userObject = {
-      userName: `guest-${uuidv4()}`,
-      type: "guest"
-    };
-    if (online) {
+  async function handleGuest() {
+    setUsernameMsg("Logging in as guest.")
+    setLoading(true);
+    googleSignOut();
+    const userObject = loginFxs.createGuest(online);
+    if (userObject.token) {
       startSession(userObject);
     } else {
       setUser(userObject);
+      setLoading(false);
+      setOnline(false);
       setIsSignedIn(true); // component will unmount
     }
   }
-  // ---
+  // --- end Guest Login ---
 
-  const offlineLogin = (
+  // --- Offline Login ---
+  const OfflineLogin = props => (
     <div id="login" className="overlay">
       <div className="loginItem">
         <div className="loginLabel">
@@ -163,17 +151,20 @@ export default function Login(props) {
           id="guestBtn"
           className="loginBtn"
           key="guestBtn"
-          onClick={handleGuest}
+          onClick={props.handleGuest}
         >
           Play Offline
         </button>
       </div>
     </div>
   );
+  // --- end Offline Login ---
 
-  return !online
-    ? offlineLogin
-    : (
+  return !online ? (
+    <OfflineLogin
+      handleGuest={handleGuest}
+    />
+  ) : (
       <div id="login" className="overlay">
         <div className="loginItem">
           <label htmlFor="username" className="loginLabel">
@@ -212,7 +203,15 @@ export default function Login(props) {
           onClick={handleLogin}
         >
           Sign in
-    </button>
+      </button>
+        <button
+          id="registerBtn"
+          className="loginBtn"
+          key="registerBtn"
+          onClick={handleRegister}
+        >
+          New User
+      </button>
         <button
           id="guestBtn"
           className="loginBtn"
@@ -220,11 +219,13 @@ export default function Login(props) {
           onClick={handleGuest}
         >
           Play as a Guest
-    </button>
+      </button>
         <div className="loginItem">
-          {gapiLoaded &&
-            <button id="gLoginBtn"></button>
-          }
+          <GoogleLogin
+            setLoading={setLoading}
+            setLoginMsg={setLoginMsg}
+            successCallback={successCallback}
+          />
           <div className="loginLabel">
             {loginMsg}{loading && <LoadIcon />}
           </div>
@@ -232,10 +233,3 @@ export default function Login(props) {
       </div>
     );
 }
-
-async function googleSignOut() {
-  const auth2 = await gapi.auth2.getAuthInstance();
-  await auth2.signOut();
-}
-
-export { googleSignOut };

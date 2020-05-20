@@ -3,6 +3,6 @@ export const clientIds = {
 }
 export const apiUrls = {
     test: "https://localhost:44319/api",
-    development: "https://graphhopperapi.azurewebsites.net/api",
+    development: "http://localhost:5000",
     production: "https://graphhopperapi.azurewebsites.net/api"
 }
