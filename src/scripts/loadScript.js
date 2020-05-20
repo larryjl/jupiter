@@ -1,4 +1,4 @@
-export default function loadScript(scriptId, url, callback) {
+export default function loadScript(scriptId, url, callback=undefined) {
   const existingScript = document.getElementById(scriptId);
   let script;
 
