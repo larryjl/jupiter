@@ -15,6 +15,7 @@ class AttemptModel(db.Model):
     levelId = db.Column(db.Integer)
     startPosition = db.Column(db.String(255))
     targetPosition = db.Column(db.String(255))
+    sequences = db.relationship("SequenceModel", lazy="dynamic")
 
     def __init__(self, user_id, level_id, start_position, target_position):
         self.userId = user_id

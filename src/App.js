@@ -236,7 +236,15 @@ function Game(props) {
   const runStack = async () => {
     
     if (online && callStackComps.length > 0) {
-      await postRun(callStackComps, attemptId, playerPositionsArray, playerAcceptablePositionsArray, score, false);
+      await postRun(
+        callStackComps,
+        attemptId,
+        playerPositionsArray,
+        playerAcceptablePositionsArray,
+        score,
+        false,
+        user.token
+      );
     }
 
     const recursiveFunc = async (array) => {

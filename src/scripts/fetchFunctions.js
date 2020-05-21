@@ -2,7 +2,7 @@ import { fetchJson } from "./fetch";
 
 async function endAttempt(attemptId, token) {
   let json = await fetchJson("attempt/id=" + attemptId, "PATCH", {}, token);
-  return json
+  return json;
 }
 
 async function postAttempt(
@@ -12,18 +12,18 @@ async function postAttempt(
   targetPosition,
   token
 ) {
-  const attemptBody = {
+  const body = {
     levelId: levelId,
     startPosition: JSON.stringify(startPosition),
     targetPosition: JSON.stringify(targetPosition),
   };
-  const attemptJson = await fetchJson(
+  const json = await fetchJson(
     "attempt/username=" + username,
     "POST",
-    attemptBody,
+    body,
     token
   );
-  return attemptJson.id;
+  return json.id;
 }
 
 async function postRun(
@@ -32,18 +32,18 @@ async function postRun(
   playerPositionsArray,
   playerAcceptablePositionsArray,
   score,
-  success = false
+  success,
+  token
 ) {
   const callStackFunctions = callStackComps.map((v) => v.props.desc);
-  const runBody = {
-    attemptId: attemptId,
+  const body = {
     functions: JSON.stringify(callStackFunctions),
     playerPositions: JSON.stringify(playerPositionsArray),
     playerAcceptablePositions: JSON.stringify(playerAcceptablePositionsArray),
     score: score,
     success: success,
   };
-  await fetchJson("FunctionsRuns", "POST", runBody);
+  let json = await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
 }
 
 export { endAttempt, postAttempt, postRun };
