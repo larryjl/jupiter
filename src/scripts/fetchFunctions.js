@@ -43,7 +43,7 @@ async function postRun(
     score: score,
     success: success,
   };
-  let json = await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
+  await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
 }
 
 export { endAttempt, postAttempt, postRun };

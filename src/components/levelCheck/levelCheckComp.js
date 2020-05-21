@@ -16,7 +16,8 @@ export default function LevelCheck(props) {
       props.playerPositionsArray,
       props.playerAcceptablePositionsArray,
       props.score,
-      true
+      true,
+      props.user.token
     );
     props.endAttempt(props.attemptId, props.user.token);
   }
