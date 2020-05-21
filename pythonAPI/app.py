@@ -46,5 +46,5 @@ api.add_resource(Attempt, "/attempt/username=<string:username>")
 
 if __name__ == "__main__":
     db.init_app(app)
-    # app.run(port=5000, debug=True) # dev server
-    serve(app, host="127.0.0.1", port=5000) # prod WSGI server (waitress)
+    app.run(port=5000, debug=True)  # dev server
+    # serve(app, host="127.0.0.1", port=5000) # prod WSGI server (waitress)

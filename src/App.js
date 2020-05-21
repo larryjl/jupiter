@@ -72,15 +72,18 @@ function Game(props) {
   const [online, setOnline] = useState(true);
   const [attemptId, setAttemptId] = useState(null);
   const [score, setScore] = useState(0);
-  useEffect(() => {
-    async function startAttempt() {
-      if (online && isSignedIn) {
-        const newAttemptId = await postAttempt(user.id, currentLevel, playerPositionsArray[0], targetPosition);
-        setAttemptId(newAttemptId);
+  useEffect(
+    () => {
+      async function startAttempt() {
+        if (online && isSignedIn && user && currentLevel) {
+          const newAttemptId = await postAttempt(user.userName, currentLevel, playerPositionsArray[0], targetPosition, user.token);
+          setAttemptId(newAttemptId);
+        }
       }
-    }
-    startAttempt();
-  }, [isSignedIn]);
+      startAttempt();
+    }, 
+    [currentLevel, isSignedIn, online, playerPositionsArray, targetPosition, user]
+  );
   // --
 
   let player = {

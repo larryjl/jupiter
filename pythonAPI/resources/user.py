@@ -26,8 +26,8 @@ class UserRegister(Resource):
             return {"message": "A user with that username already exists."}, 400
 
         try:
-            UserModel(data["username"], data["password"]).save_to_db()
-            return {"message": "User created."}, 201
+            new_user = UserModel(data["username"], data["password"]).save_to_db()
+            return {"message": "User created.", "id": new_user.id}, 201
         except:
             return {"message": "An error occurred inserting the user."}, 500
 

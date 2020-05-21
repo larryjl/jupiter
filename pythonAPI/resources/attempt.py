@@ -6,10 +6,10 @@ from models.user import UserModel
 
 class Attempt(Resource):
 
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #     "username", type=str, required=True, help="This field cannot be blank."
-    # )
+    parser = reqparse.RequestParser()
+    parser.add_argument("levelId", type=int, required=True)
+    parser.add_argument("startPosition", type=str, required=True)
+    parser.add_argument("targetPosition", type=str, required=True)
 
     @jwt_required()
     def get(self, username):
@@ -26,26 +26,28 @@ class Attempt(Resource):
 
     @jwt_required()
     def post(self, username):
-        # data = Attempt.parser.parse_args()
+        data = Attempt.parser.parse_args()
 
         try:
-            existing_user = UserModel.find_by_username(username)
+            user = UserModel.find_by_username(username)
+            userId = user.id
         except:
             return {"message": "An error occurred searching the user."}, 500
 
-        if not existing_user:
+        if not user:
             return {"message": "A user with that username does not exist."}, 404
 
         try:
-            AttemptModel(username).save_to_db()
-            return {"message": "Attempt created."}, 201
+            attempt = AttemptModel(
+                userId, data["levelId"], data["startPosition"], data["targetPosition"]
+            ).save_to_db()
+            return {"message": "Attempt created.", "id": attempt.id}, 201
         except:
             return {"message": "An error occurred posting the attempt."}, 500
 
 
 class AttemptList(Resource):
-
-    # @jwt_required()
+    @jwt_required()
     def get(self):
         try:
             attempts = [attempt.json() for attempt in AttemptModel.query.all()]

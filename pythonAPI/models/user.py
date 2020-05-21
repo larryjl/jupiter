@@ -2,16 +2,16 @@ from db import db
 
 
 class UserModel(db.Model):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False, unique=True, index=True)
-    password = db.Column(db.String(80), nullable=False)
     created = db.Column(
         db.DateTime(timezone=False),
         nullable=False,
         default=db.func.timezone("MST", db.func.current_timestamp()),
     )
+    username = db.Column(db.String(255), nullable=False, unique=True, index=True)
+    password = db.Column(db.String(255), nullable=False)
     attempts = db.relationship("AttemptModel", lazy="dynamic")
 
     def __init__(self, username, password):
@@ -36,7 +36,9 @@ class UserModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+        return self
