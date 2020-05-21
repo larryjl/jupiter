@@ -10,9 +10,9 @@ const agent = new https.Agent({
 
 let baseUrl = apiUrls[process.env.NODE_ENV];
 
-async function fetchJson(route, method = "POST", body = {}, authToken = "") {
+async function fetchJson(route, method, body = {}, authToken = "") {
   const init = {
-    method: method, // *GET, POST, PUT, DELETE, etc.
+    method: method,
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,7 +27,7 @@ async function fetchJson(route, method = "POST", body = {}, authToken = "") {
   if (authToken) {
     init.headers.Authorization = "JWT " + authToken
   }
-  if (method === "POST" || method === "PUT") {
+  if (method === "POST" || method === "PUT" || method === "PATCH") {
     init.body = JSON.stringify(body);
   }
   try {
