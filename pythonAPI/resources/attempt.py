@@ -14,9 +14,17 @@ class UserAttempt(Resource):
     @jwt_required()
     def get(self, username):
         try:
+            user = UserModel.find_by_username(username)
+            userId = user.id
+        except:
+            return {"message": "An error occurred searching the user."}, 500
+        if not user:
+            return {"message": "A user with that username does not exist."}, 404
+
+        try:
             attempts = [
                 attempt.json()
-                for attempt in AttemptModel.query.filter_by(username=username).all()
+                for attempt in AttemptModel.query.filter_by(userId=userId).all()
             ]
         except:
             return {"message": "An error occurred finding the attempts."}, 500
@@ -33,7 +41,6 @@ class UserAttempt(Resource):
             userId = user.id
         except:
             return {"message": "An error occurred searching the user."}, 500
-
         if not user:
             return {"message": "A user with that username does not exist."}, 404
 
