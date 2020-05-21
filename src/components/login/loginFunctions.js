@@ -1,47 +1,12 @@
 import { fetchJson } from "../../scripts/fetch";
 import { v4 as uuidv4 } from 'uuid';
 
-async function getPlayerId(userObject) {
-  let jsonPlayer;
-  try {
-    if (userObject.type !== "guest") {
-      // // todo: login password authentication
-      jsonPlayer = await fetchJson("Players/=" + userObject.userName, "GET");
-    }
-    if (userObject.type === "guest" || !jsonPlayer.id) {
-      jsonPlayer = await fetchJson("Players", "POST", userObject);
-    }
-    if (jsonPlayer.id) {
-      return jsonPlayer.id;
-    }
-  } catch (error) {
-    return false;
-  }
-}
-
-async function getLevel(online, userType, playerId) {
-  if (!online || userType === "guest") {
-    return 1;
-  } else {
-    try {
-      const jsonLevel = await fetchJson(
-        "Attempts/LastLevel/PlayerId=" + playerId,
-        "GET"
-      );
-      return jsonLevel[0].levelId;
-    } catch (error) {
-      return 1;
-    }
-  }
-}
-
-const validateUsername = username => (
+const validateUsername = (username) =>
   username.length >= 6 &&
   username.length <= 128 &&
   !username.includes(" ") &&
   /^[a-zA-Z]/.test(username.charAt(0)) &&
-  username.indexOf("guest") !== 0
-);
+  username.indexOf("guest") !== 0;
 
 const validatePassword = password => (
   password.length >= 6 && password.length <= 128 && !password.includes(" ")
@@ -65,7 +30,7 @@ async function register(username, password = "") {
   // }
 }
 
-async function createGuest(online) {
+async function logGuest(online) {
   let userName = "guest-" + uuidv4();
   const userObject = {
     userName: userName,
@@ -79,13 +44,24 @@ async function createGuest(online) {
   return userObject;
 }
 
+async function logGoogle(googleId) {
+  let userName = "google-" + googleId;
+  const user = {
+    userName: userName,
+    type: "google",
+  };
+  let json = await register(userName);
+  json = await authenticate(userName);
+  user.token = json.access_token;
+
+  return user;
+}
 
 export default {
-  getPlayerId: getPlayerId,
-  getLevel: getLevel,
   validateUsername: validateUsername,
   validatePassword: validatePassword,
   authenticate: authenticate,
   register: register,
-  createGuest: createGuest,
-}
+  logGuest: logGuest,
+  logGoogle: logGoogle,
+};

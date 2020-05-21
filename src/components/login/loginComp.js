@@ -14,35 +14,22 @@ export default function Login(props) {
   const [loading, setLoading] = useState(true);
   const [loginMsg, setLoginMsg] = useState("Loading Google Sign-in.");
 
-
-  const startSession = useCallback(async (userObject) => {
-    const playerId = await loginFxs.getPlayerId(userObject);
-    if (!playerId) {
-      setPasswordMsg("Login Failed.")
-      setOnline(false)
-      return;
-    }
-
-    setUser({
-      userName: userObject.userName,
-      id: playerId,
-      type: userObject.type
-    });
-
-    const level = await loginFxs.getLevel(online, userObject.type, playerId);
-    setCurrentLevel(level);
-
+  const startSession = useCallback(
+    (user) => {
+      setUser(user);
     setIsSignedIn(true); // component will unmount
-  }, [online, setCurrentLevel, setIsSignedIn, setOnline, setUser]);
-
+    },
+    [setIsSignedIn, setUser]
+  );
 
   // --- Google Login ---
-  const successCallback = useCallback((googleId) => {
-    startSession({
-      userName: googleId,
-      type: "google"
-    });
-  }, [startSession])
+  const successCallback = useCallback(
+    (googleId) => {
+      const user = loginFxs.logGoogle(googleId);
+      startSession(user);
+    },
+    [startSession]
+  );
   // --- end Google Login ---
 
   // --- Regular Login ---
@@ -118,26 +105,20 @@ export default function Login(props) {
       userName: username,
       type: "login",
       password: password,
-      token: token
+      token: token,
     });
   }
   // --- end Regular Login ---
 
   // --- Guest Login ---
   async function handleGuest() {
-    setUsernameMsg("Logging in as guest.")
+    setUsernameMsg("Logging in as guest.");
     setLoading(true);
     googleSignOut();
-    const userObject = loginFxs.createGuest(online);
-    if (userObject.token) {
-      startSession(userObject);
-    } else {
-      setUser(userObject);
-      setLoading(false);
-      setOnline(false);
-      setIsSignedIn(true); // component will unmount
-    }
+    const user = loginFxs.logGuest(online);
+    startSession(user);
   }
+
   // --- end Guest Login ---
 
   // --- Offline Login ---
