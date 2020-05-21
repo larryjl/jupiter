@@ -17,7 +17,7 @@ export default function Login(props) {
   const startSession = useCallback(
     (user) => {
       setUser(user);
-    setIsSignedIn(true); // component will unmount
+      setIsSignedIn(true); // component will unmount
     },
     [setIsSignedIn, setUser]
   );
@@ -44,21 +44,21 @@ export default function Login(props) {
   function validateInputs(username, password) {
     setUsernameMsg("");
     setPasswordMsg("");
-    let validUsername = loginFxs.validateUsername(username)
+    let validUsername = loginFxs.validateUsername(username);
     if (!validUsername) {
       setUsernameMsg(
         "Must be 6 or more characters, starting with a letter, with no spaces."
       );
     }
-    let validPassword = loginFxs.validatePassword(password)
+    let validPassword = loginFxs.validatePassword(password);
     if (!validPassword) {
       setPasswordMsg("Must be 6 or more characters, with no spaces.");
     }
-    return (validUsername && validPassword);
+    return validUsername && validPassword;
   }
 
   async function handleRegister() {
-    setUsernameMsg("Registering new user.")
+    setUsernameMsg("Registering new user.");
     setLoading(true);
     if (!validateInputs(username, password)) {
       setLoading(false);
@@ -66,7 +66,6 @@ export default function Login(props) {
     }
     let json = await loginFxs.register(username, password);
     if (json.status) {
-      console.log(json)
       switch (json.status) {
         case 400:
           setLoading(false);
@@ -83,12 +82,11 @@ export default function Login(props) {
   }
 
   async function handleLogin() {
-    setUsernameMsg("Logging in.")
+    setUsernameMsg("Logging in.");
     setLoading(true);
     let json = await loginFxs.authenticate(username, password);
-    let token = json.access_token
+    let token = json.access_token;
     if (json.status) {
-      console.log(json)
       switch (json.status) {
         case 401:
           setLoading(false);
@@ -122,7 +120,7 @@ export default function Login(props) {
   // --- end Guest Login ---
 
   // --- Offline Login ---
-  const OfflineLogin = props => (
+  const OfflineLogin = (props) => (
     <div id="login" className="overlay">
       <div className="loginItem">
         <div className="loginLabel">
@@ -142,75 +140,74 @@ export default function Login(props) {
   // --- end Offline Login ---
 
   return !online ? (
-    <OfflineLogin
-      handleGuest={handleGuest}
-    />
+    <OfflineLogin handleGuest={handleGuest} />
   ) : (
-      <div id="login" className="overlay">
-        <div className="loginItem">
-          <label htmlFor="username" className="loginLabel">
-            {`Username: ${usernameMsg}`}
-          </label>
-          <input
-            type="text"
-            autoComplete="username"
-            id="username"
-            name="username"
-            key="username"
-            className="loginInput"
-            value={username}
-            onChange={handleUsername}
-          ></input>
-        </div>
-        <div className="loginItem">
-          <label htmlFor="password" className="loginLabel">
-            {`Password: ${passwordMsg}`}
-          </label>
-          <input
-            type="password"
-            autoComplete="current-password"
-            id="password"
-            name="password"
-            key="password"
-            className="loginInput"
-            value={password}
-            onChange={handlePassword}
-          ></input>
-        </div>
-        <button
-          id="loginBtn"
-          className="loginBtn"
-          key="loginBtn"
-          onClick={handleLogin}
-        >
-          Sign in
+    <div id="login" className="overlay">
+      <div className="loginItem">
+        <label htmlFor="username" className="loginLabel">
+          {`Username: ${usernameMsg}`}
+        </label>
+        <input
+          type="text"
+          autoComplete="username"
+          id="username"
+          name="username"
+          key="username"
+          className="loginInput"
+          value={username}
+          onChange={handleUsername}
+        ></input>
+      </div>
+      <div className="loginItem">
+        <label htmlFor="password" className="loginLabel">
+          {`Password: ${passwordMsg}`}
+        </label>
+        <input
+          type="password"
+          autoComplete="current-password"
+          id="password"
+          name="password"
+          key="password"
+          className="loginInput"
+          value={password}
+          onChange={handlePassword}
+        ></input>
+      </div>
+      <button
+        id="loginBtn"
+        className="loginBtn"
+        key="loginBtn"
+        onClick={handleLogin}
+      >
+        Sign in
       </button>
-        <button
-          id="registerBtn"
-          className="loginBtn"
-          key="registerBtn"
-          onClick={handleRegister}
-        >
-          New User
+      <button
+        id="registerBtn"
+        className="loginBtn"
+        key="registerBtn"
+        onClick={handleRegister}
+      >
+        New User
       </button>
-        <button
-          id="guestBtn"
-          className="loginBtn"
-          key="guestBtn"
-          onClick={handleGuest}
-        >
-          Play as a Guest
+      <button
+        id="guestBtn"
+        className="loginBtn"
+        key="guestBtn"
+        onClick={handleGuest}
+      >
+        Play as a Guest
       </button>
-        <div className="loginItem">
-          <GoogleLogin
-            setLoading={setLoading}
-            setLoginMsg={setLoginMsg}
-            successCallback={successCallback}
-          />
-          <div className="loginLabel">
-            {loginMsg}{loading && <LoadIcon />}
-          </div>
+      <div className="loginItem">
+        <GoogleLogin
+          setLoading={setLoading}
+          setLoginMsg={setLoginMsg}
+          successCallback={successCallback}
+        />
+        <div className="loginLabel">
+          {loginMsg}
+          {loading && <LoadIcon />}
         </div>
       </div>
-    );
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
 import { fetchJson } from "../../scripts/fetch";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const validateUsername = (username) =>
   username.length >= 6 &&
@@ -8,40 +8,37 @@ const validateUsername = (username) =>
   /^[a-zA-Z]/.test(username.charAt(0)) &&
   username.indexOf("guest") !== 0;
 
-const validatePassword = password => (
-  password.length >= 6 && password.length <= 128 && !password.includes(" ")
-);
+const validatePassword = (password) =>
+  password.length >= 6 && password.length <= 128 && !password.includes(" ");
 
 async function authenticate(username, password = "") {
-  // try {
-  let json = await fetchJson("auth", "POST", { "username": username, "password": password });
+  let json = await fetchJson("auth", "POST", {
+    username: username,
+    password: password,
+  });
   return json;
-  // } catch (error) {
-  //   return JSON.parse(error.message);
-  // }
 }
 
 async function register(username, password = "") {
-  // try {
-  let json = await fetchJson("register", "POST", { "username": username, "password": password })
+  let json = await fetchJson("register", "POST", {
+    username: username,
+    password: password,
+  });
   return json;
-  // } catch (error) {
-  //   return JSON.parse(error.message);
-  // }
 }
 
 async function logGuest(online) {
   let userName = "guest-" + uuidv4();
-  const userObject = {
+  const user = {
     userName: userName,
-    type: "guest"
+    type: "guest",
   };
   if (online) {
     let json = await register(userName);
     json = await authenticate(userName);
-    userObject.token = json.access_token;
+    user.token = json.access_token;
   }
-  return userObject;
+  return user;
 }
 
 async function logGoogle(googleId) {
