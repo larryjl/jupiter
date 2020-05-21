@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import "./login.css";
 import loginFxs from "./loginFunctions";
+import { authenticate, register } from "../../scripts/fetchFunctions";
 import LoadIcon from "../loadIcon/loadIcon";
 import GoogleLogin from "./googleLoginComp";
 import { googleSignOut } from "./googleLoginComp";
@@ -64,7 +65,7 @@ export default function Login(props) {
       setLoading(false);
       return;
     }
-    let json = await loginFxs.register(username, password);
+    let json = await register(username, password);
     if (json.status) {
       switch (json.status) {
         case 400:
@@ -84,7 +85,7 @@ export default function Login(props) {
   async function handleLogin() {
     setUsernameMsg("Logging in.");
     setLoading(true);
-    let json = await loginFxs.authenticate(username, password);
+    let json = await authenticate(username, password);
     let token = json.access_token;
     if (json.status) {
       switch (json.status) {

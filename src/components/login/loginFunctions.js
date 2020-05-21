@@ -1,4 +1,4 @@
-import { fetchJson } from "../../scripts/fetch";
+import { authenticate, register } from "../../scripts/fetchFunctions";
 import { v4 as uuidv4 } from "uuid";
 
 const validateUsername = (username) =>
@@ -10,22 +10,6 @@ const validateUsername = (username) =>
 
 const validatePassword = (password) =>
   password.length >= 6 && password.length <= 128 && !password.includes(" ");
-
-async function authenticate(username, password = "0") {
-  let json = await fetchJson("auth", "POST", {
-    username: username,
-    password: password,
-  });
-  return json;
-}
-
-async function register(username, password = "0") {
-  let json = await fetchJson("register", "POST", {
-    username: username,
-    password: password,
-  });
-  return json;
-}
 
 async function logGuest(online) {
   let userName = "guest-" + uuidv4();
@@ -56,8 +40,6 @@ async function logGoogle(googleId) {
 export default {
   validateUsername: validateUsername,
   validatePassword: validatePassword,
-  authenticate: authenticate,
-  register: register,
   logGuest: logGuest,
   logGoogle: logGoogle,
 };

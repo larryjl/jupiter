@@ -1,5 +1,21 @@
 import { fetchJson } from "./fetch";
 
+async function authenticate(username, password = "0") {
+  let json = await fetchJson("auth", "POST", {
+    username: username,
+    password: password,
+  });
+  return json;
+}
+
+async function register(username, password = "0") {
+  let json = await fetchJson("register", "POST", {
+    username: username,
+    password: password,
+  });
+  return json;
+}
+
 async function endAttempt(attemptId, token) {
   let json = await fetchJson("attempt/id=" + attemptId, "PATCH", {}, token);
   return json;
@@ -43,7 +59,23 @@ async function postRun(
     score: score,
     success: success,
   };
-  await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
+  let json = await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
+  return json
 }
 
-export { endAttempt, postAttempt, postRun };
+async function getUserAttempts(username, token) {
+  let json = await fetchJson("attempt/username=" + username, "GET", undefined, token);
+  return json.attempts
+}
+
+async function getAttempts(token) {
+  let json = await fetchJson("attempts", "GET", undefined, token);
+  return json.attempts
+}
+
+async function getSequences(token) {
+  let json = await fetchJson("sequences", "GET", undefined, token);
+  return json.sequences
+}
+
+export { authenticate, register, endAttempt, postAttempt, postRun, getUserAttempts, getAttempts, getSequences };
