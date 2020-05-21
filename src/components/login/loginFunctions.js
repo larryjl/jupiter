@@ -11,7 +11,7 @@ const validateUsername = (username) =>
 const validatePassword = (password) =>
   password.length >= 6 && password.length <= 128 && !password.includes(" ");
 
-async function authenticate(username, password = "") {
+async function authenticate(username, password = "0") {
   let json = await fetchJson("auth", "POST", {
     username: username,
     password: password,
@@ -19,7 +19,7 @@ async function authenticate(username, password = "") {
   return json;
 }
 
-async function register(username, password = "") {
+async function register(username, password = "0") {
   let json = await fetchJson("register", "POST", {
     username: username,
     password: password,
@@ -50,7 +50,6 @@ async function logGoogle(googleId) {
   let json = await register(userName);
   json = await authenticate(userName);
   user.token = json.access_token;
-
   return user;
 }
 

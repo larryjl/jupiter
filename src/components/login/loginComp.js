@@ -24,8 +24,8 @@ export default function Login(props) {
 
   // --- Google Login ---
   const successCallback = useCallback(
-    (googleId) => {
-      const user = loginFxs.logGoogle(googleId);
+    async (googleId) => {
+      const user = await loginFxs.logGoogle(googleId);
       startSession(user);
     },
     [startSession]
@@ -113,7 +113,7 @@ export default function Login(props) {
     setUsernameMsg("Logging in as guest.");
     setLoading(true);
     googleSignOut();
-    const user = loginFxs.logGuest(online);
+    const user = await loginFxs.logGuest(online);
     startSession(user);
   }
 
