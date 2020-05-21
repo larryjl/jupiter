@@ -6,7 +6,7 @@ from waitress import serve
 
 from config import secret_key
 from security import authenticate, identity
-from resources.user import UserRegister
+from resources.user import UserRegister, User
 from resources.attempt import UserAttempt, Attempt, AttemptList
 
 from db import db
@@ -40,6 +40,7 @@ def home():
 jwt = JWT(app, authenticate, identity)  # /auth
 
 api.add_resource(UserRegister, "/register")
+api.add_resource(User, "/user/username=<string:username>")
 api.add_resource(UserAttempt, "/attempt/username=<string:username>")
 api.add_resource(Attempt, "/attempt/id=<string:attempt_id>")
 api.add_resource(AttemptList, "/attempts")

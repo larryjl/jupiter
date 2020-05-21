@@ -51,3 +51,13 @@ class UserRegister(Resource):
             return {"message": "User updated."}, 201
         except:
             return {"message": "An error occurred inserting the user."}, 500
+
+
+class User(Resource):
+    @jwt_required()
+    def get(self, username):
+        try:
+            user = UserModel.find_by_username(username)
+        except:
+            return {"message": "An error occurred searching the user."}, 500
+        return user.json(), 200

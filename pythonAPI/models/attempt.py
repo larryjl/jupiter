@@ -26,7 +26,7 @@ class AttemptModel(db.Model):
         return {
             "userId": self.userId,
             "levelId": self.levelId,
-            "startPosition": self.self.startPosition,
+            "startPosition": self.startPosition,
             "targetPosition": self.targetPosition,
         }
 

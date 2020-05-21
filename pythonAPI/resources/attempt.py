@@ -67,7 +67,7 @@ class Attempt(Resource):
             return {"message": "An error occurred finding the attempt."}, 500
         if not attempt:
             return {"message": "That attempt does not exist."}, 404
-        return {"attempt": attempt}, 200
+        return attempt.json(), 200
 
     @jwt_required()
     def patch(self, attempt_id):
