@@ -7,7 +7,7 @@ from waitress import serve
 from config import secret_key
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.attempt import Attempt, AttemptList
+from resources.attempt import UserAttempt, Attempt, AttemptList
 
 from db import db
 from postgres_config import pg_config
@@ -40,8 +40,9 @@ def home():
 jwt = JWT(app, authenticate, identity)  # /auth
 
 api.add_resource(UserRegister, "/register")
+api.add_resource(UserAttempt, "/attempt/username=<string:username>")
+api.add_resource(Attempt, "/attempt/id=<string:attempt_id>")
 api.add_resource(AttemptList, "/attempts")
-api.add_resource(Attempt, "/attempt/username=<string:username>")
 
 
 if __name__ == "__main__":

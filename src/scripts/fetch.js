@@ -35,9 +35,6 @@ async function fetchJson(route, method = "POST", body = {}, authToken = "") {
     if (!response.ok) {
       return {"status": response.status, "text": response.statusText}
     }
-    if (method === "PATCH") {
-      return; // No json
-    }
     return await response.json();
   } catch (error) {
     const message = `/${route}: ${method} error: ${error.message}`

@@ -1,7 +1,8 @@
 import { fetchJson } from "./fetch";
 
-async function endAttempt(attemptId) {
-  await fetchJson("Attempts/EndAttempt/" + attemptId, "PATCH");
+async function endAttempt(attemptId, token) {
+  let json = await fetchJson("attempt/id=" + attemptId, "PATCH", {}, token);
+  return json
 }
 
 async function postAttempt(

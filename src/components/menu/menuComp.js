@@ -99,11 +99,12 @@ export default function Menu(props) {
     setMenuOpen(prev => !prev);
   }
   function handleClickRestart() {
-    props.endAttempt(props.attemptId);
+    props.endAttempt(props.attemptId, props.user.token);
     props.resetPlayer(props.user.id, props.levelId, props.playerPosition, props.targetPosition);
     setMenuOpen(false);
   }
   async function handleClickSignOut() {
+    props.endAttempt(props.attemptId, props.user.token);
     if (props.user.type !== "guest") {
       googleSignOut();
     }

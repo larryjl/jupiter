@@ -4,7 +4,7 @@ from models.attempt import AttemptModel
 from models.user import UserModel
 
 
-class Attempt(Resource):
+class UserAttempt(Resource):
 
     parser = reqparse.RequestParser()
     parser.add_argument("levelId", type=int, required=True)
@@ -26,7 +26,7 @@ class Attempt(Resource):
 
     @jwt_required()
     def post(self, username):
-        data = Attempt.parser.parse_args()
+        data = UserAttempt.parser.parse_args()
 
         try:
             user = UserModel.find_by_username(username)
@@ -56,3 +56,31 @@ class AttemptList(Resource):
         if not attempts:
             return {"message": "No attempts found."}, 404
         return {"attempts": attempts}, 200
+
+
+class Attempt(Resource):
+    @jwt_required()
+    def get(self, attempt_id):
+        try:
+            attempt = AttemptModel.find_by_id(attempt_id)
+        except:
+            return {"message": "An error occurred finding the attempt."}, 500
+        if not attempt:
+            return {"message": "That attempt does not exist."}, 404
+        return {"attempt": attempt}, 200
+
+    @jwt_required()
+    def patch(self, attempt_id):
+        try:
+            attempt = AttemptModel.find_by_id(attempt_id)
+        except:
+            return {"message": "An error occurred searching the attempt."}, 500
+
+        if not attempt:
+            return {"message": "That attempt does not exist."}, 404
+
+        try:
+            attempt.update_end_time()
+            return {"message": "Attempt patched.", "id": attempt.id}, 200
+        except:
+            return {"message": "An error occurred patching the attempt."}, 500

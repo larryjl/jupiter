@@ -18,11 +18,11 @@ export default function LevelCheck(props) {
       props.score,
       true
     );
-    props.endAttempt(props.attemptId);
+    props.endAttempt(props.attemptId, props.user.token);
   }
   function handleReset() {
     props.resetPlayer(
-      props.userId,
+      props.user.userName,
       props.levelId,
       props.playerPositionsArray[0],
       props.targetPosition

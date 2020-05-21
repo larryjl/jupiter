@@ -10,6 +10,7 @@ class AttemptModel(db.Model):
         nullable=False,
         default=db.func.timezone("MST", db.func.current_timestamp()),
     )
+    ended = db.Column(db.DateTime(timezone=False), nullable=True,)
     userId = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     levelId = db.Column(db.Integer)
     startPosition = db.Column(db.String(255))
@@ -22,7 +23,12 @@ class AttemptModel(db.Model):
         self.targetPosition = target_position
 
     def json(self):
-        return {"username": self.username}
+        return {
+            "userId": self.userId,
+            "levelId": self.levelId,
+            "startPosition": self.self.startPosition,
+            "targetPosition": self.targetPosition,
+        }
 
     def save_to_db(self):
         db.session.add(self)
@@ -33,3 +39,12 @@ class AttemptModel(db.Model):
         db.session.delete(self)
         db.session.commit()
         return self
+
+    def update_end_time(self):
+        self.ended = db.func.timezone("MST", db.func.current_timestamp())
+        db.session.commit()
+        return self
+
+    @classmethod
+    def find_by_id(cls, id_):
+        return cls.query.filter_by(id=id_).first()

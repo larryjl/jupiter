@@ -323,7 +323,7 @@ function Game(props) {
           playerPositionsArray={playerPositionsArray}
           playerAcceptablePositionsArray={playerAcceptablePositionsArray}
           score={score}
-          userId={user.id}
+          user={user}
           levelId={currentLevel}
           targetPosition={targetPosition}
           online={online}
