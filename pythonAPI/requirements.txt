@@ -1,0 +1,6 @@
+Flask
+Flask-Restful
+Flask-JWT
+Flask-SQLlchemy
+Flask-CORS
+uwsgi
