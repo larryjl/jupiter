@@ -17,7 +17,13 @@ import { endAttempt, postAttempt, postRun } from "./scripts/fetchFunctions";
 
 
 function Game(props) {
-  let shapesArray = ["circle", "square", "star", "rectangle", "triangle"];
+  let shapesArray = [
+    "circle",
+    "square",
+    "rectangle",
+    "triangle",
+    // "star"
+  ];
   let randomShape = shapesArray[Math.floor(Math.random() * shapesArray.length)];
 
   const [shape, setShape] = useState(randomShape);
