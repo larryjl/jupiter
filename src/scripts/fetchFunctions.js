@@ -78,4 +78,9 @@ async function getSequences(token) {
   return json.sequences
 }
 
-export { authenticate, register, endAttempt, postAttempt, postRun, getUserAttempts, getAttempts, getSequences };
+async function getUserSequences(username, token) {
+  let json = await fetchJson("sequence/username=" + username, "GET", undefined, token);
+  return json.sequences
+}
+
+export { authenticate, register, endAttempt, postAttempt, postRun, getUserAttempts, getAttempts, getSequences, getUserSequences };
