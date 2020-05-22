@@ -10,6 +10,7 @@
     height: 3em;
     width: 3em;
     top: -1em;
+    left: 0;
 }
 .ellipsis path {
     fill: var(--text-secondary-color);
@@ -22,6 +23,19 @@
 }
 @-webkit-keyframes enter {
     from {fill: var(--text-secondary-color)}
+    to {fill:transparent}
+}
+.ellipsis.dark path {
+    fill: var(--text-primary-color);
+    animation: enter-dark ease-in-out 1s infinite alternate;
+    -webkit-animation: enter-dark ease-in-out 1s infinite alternate;
+}
+@keyframes enter-dark {
+    from {fill: var(--text-primary-color)}
+    to {fill:transparent}
+}
+@-webkit-keyframes enter-dark {
+    from {fill: var(--text-primary-color)}
     to {fill:transparent}
 }
 .ellipsis path:nth-child(1) {
