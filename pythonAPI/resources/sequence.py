@@ -2,6 +2,42 @@ from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from models.sequence import SequenceModel
 from models.attempt import AttemptModel
+from models.user import UserModel
+from db import db
+
+
+class UserSequence(Resource):
+    @jwt_required()
+    def get(self, username):
+        try:
+            user = UserModel.find_by_username(username)
+        except:
+            return {"message": "An error occurred searching the user."}, 500
+        if not user:
+            return {"message": "That username does not exist."}, 404
+
+        try:
+            queryResult = (
+                db.session.query(SequenceModel, AttemptModel)
+                .filter(SequenceModel.attemptId == AttemptModel.id)
+                .filter(AttemptModel.userId == UserModel.id)
+                .filter(UserModel.username == username)
+                .all()
+            )
+            sequences = []
+            for sequence_attempt in queryResult:
+                sequence = sequence_attempt[0].json()
+                attempt = sequence_attempt[1].json()
+                level = {k: v for k, v in attempt.items() if k == "levelId"}
+                sequence.update(level)
+                sequences.append(sequence)
+        except:
+            return {"message": "An error occurred finding the sequences."}, 500
+
+        if not sequences:
+            return {"message": "No sequences found."}, 404
+
+        return {"sequences": sequences}, 200
 
 
 class AttemptSequence(Resource):

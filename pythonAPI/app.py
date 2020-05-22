@@ -8,7 +8,7 @@ from config import secret_key
 from security import authenticate, identity
 from resources.user import UserRegister, User
 from resources.attempt import UserAttempt, Attempt, AttemptList
-from resources.sequence import AttemptSequence, Sequence, SequenceList
+from resources.sequence import AttemptSequence, Sequence, SequenceList, UserSequence
 
 from db import db
 from postgres_config import pg_config
@@ -45,6 +45,7 @@ api.add_resource(User, "/user/username=<string:username>")
 api.add_resource(UserAttempt, "/attempt/username=<string:username>")
 api.add_resource(Attempt, "/attempt/id=<string:attempt_id>")
 api.add_resource(AttemptList, "/attempts")
+api.add_resource(UserSequence, "/sequence/username=<string:username>")
 api.add_resource(AttemptSequence, "/sequence/attemptid=<string:attempt_id>")
 api.add_resource(Sequence, "/sequence/id=<string:sequence_id>")
 api.add_resource(SequenceList, "/sequences")
