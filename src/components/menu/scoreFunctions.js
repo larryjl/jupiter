@@ -1,54 +1,25 @@
-import { getUserAttempts, getAttempts, getSequences } from "../../scripts/fetchFunctions";
-
-function countMatchingObjects(array, compareKey, matchValue, filter) {
-  let count = 0;
-  let filteredCount = 0;
-  for (const v of array) {
-    if (v[compareKey] === matchValue) {
-      count++;
-    }
-    if (v[filter]) {
-      filteredCount++;
-    }
-  }
-  return [count, filteredCount];
-}
+import { getUserSequences } from "../../scripts/fetchFunctions";
 
 export async function getScore(username, token) {
-  let attempts = [];
-  if (username) {
-    attempts = await getUserAttempts(username, token);
-  } else {
-    attempts = await getAttempts(token);
+  const sequences = await getUserSequences(username, token);
+  if (!sequences) {
+    return
   }
-  let runs = await getSequences(token);
-  const scores = attempts.reduce((cumulator, v) => {
-    const [runCount, successCount] = countMatchingObjects(
-      runs,
-      "attemptId",
-      v.id,
-      "success"
-    );
-    const success = successCount > 0 ? "Yes" : "No";
-    if (runCount > 0) {
-      const score = runCount;
-      cumulator.push({
-        playerId: v.playerId,
-        levelId: v.levelId,
-        score: score,
-        success: success,
-      });
-    }
-    return cumulator;
-  }, []);
+  const scores = sequences.map((sequence) => {
+    let moves = JSON.parse(sequence.functions).length;
+    return {
+      levelId: Number(sequence.levelId),
+      score: moves,
+      success: sequence.success,
+    };
+  });
 
-  scores.sort((a, b) => Number(a.score) - Number(b.score));
-  scores.sort((a, b) => Number(b.levelId) - Number(a.levelId));
-
+  scores.sort((a, b) => b.score - a.score);
+  scores.sort((a, b) => a.levelId - b.levelId);
+  scores.sort((a, b) => b.success - a.success);
   const emptyScores = [];
   for (let i = 0; i < 10; i++) {
-    emptyScores.push({ playerID: "", levelId: "", score: "", success: "" });
+    emptyScores.push({ levelId: "", score: "", success: "" });
   }
-
   return scores.concat(emptyScores);
 }

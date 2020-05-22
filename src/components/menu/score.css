@@ -1,0 +1,22 @@
+#scoreTable {
+  font-size: 1.5em;
+  color: var(--text-primary-color);
+  border-top: 2px solid #fff;
+  border-collapse: collapse;
+}
+#scoreTable th,
+#scoreTable td {
+  padding: 1em 2em;
+  border-bottom: 2px solid #fff;
+}
+#scoreTable th {
+  background-color: var(--menu-highlight-color);
+  color: #fff;
+}
+#scoreTable .highlight {
+  font-weight: bold;
+}
+#noScore {
+  font-size: 2em;
+  padding: 1em;
+}
