@@ -2,7 +2,6 @@ from flask import Flask, render_template
 from flask_restful import Api
 from flask_jwt import JWT
 from flask_cors import CORS
-from waitress import serve
 
 from config import secret_key
 from security import authenticate, identity
@@ -54,4 +53,3 @@ api.add_resource(SequenceList, "/sequences")
 if __name__ == "__main__":
     db.init_app(app)
     app.run(port=5000, debug=True)  # dev server
-    # serve(app, host="127.0.0.1", port=5000) # prod WSGI server (waitress)

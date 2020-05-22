@@ -6,16 +6,14 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 black = "*"
+psycopg2 = "*"
 
 [packages]
 flask = "*"
 flask-restful = "*"
 flask-jwt = "*"
 flask-sqlalchemy = "*"
-psycopg2 = "*"
 flask-cors = "*"
-waitress = "*"
-wheel = "*"
 
 [requires]
 python_version = "3.6"
