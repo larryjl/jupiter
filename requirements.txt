@@ -1,6 +1,6 @@
 Flask
 Flask-Restful
 Flask-JWT
-Flask-SQLlchemy
+Flask-SQLAlchemy
 Flask-CORS
 uwsgi
