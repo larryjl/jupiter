@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "cc12249ed4bd001120d0fd8cc4deee00",
+    "revision": "2fc7a2d1877288d93d94ca585a97cde1",
     "url": "/jupiter/index.html"
   },
   {
-    "revision": "0c48103a6ec7a4a6a286",
-    "url": "/jupiter/static/css/main.5f45ee77.chunk.css"
+    "revision": "2030c26168c06f0355f9",
+    "url": "/jupiter/static/css/main.33d3683e.chunk.css"
   },
   {
-    "revision": "aca6dc853fd0e93d9759",
-    "url": "/jupiter/static/js/2.2aef1c1e.chunk.js"
+    "revision": "f7de9d5fddd76afa0b1f",
+    "url": "/jupiter/static/js/2.3be99b66.chunk.js"
   },
   {
     "revision": "15f31457b8b9b3f55045815fd52dc269",
-    "url": "/jupiter/static/js/2.2aef1c1e.chunk.js.LICENSE.txt"
+    "url": "/jupiter/static/js/2.3be99b66.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "0c48103a6ec7a4a6a286",
-    "url": "/jupiter/static/js/main.3d608ef3.chunk.js"
+    "revision": "2030c26168c06f0355f9",
+    "url": "/jupiter/static/js/main.3529e111.chunk.js"
   },
   {
     "revision": "d15243fc1506ff95e327",
