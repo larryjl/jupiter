@@ -26,7 +26,8 @@ export default function LevelCheck(props) {
       props.user.userName,
       props.levelId,
       props.playerPositionsArray[0],
-      props.targetPosition
+      props.targetPosition,
+      props.user.token
     );
   }
   return ( show &&

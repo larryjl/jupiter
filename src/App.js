@@ -175,14 +175,26 @@ function Game(props) {
     transformFunctions[name](e.target.value)
   };
 
-  async function resetPlayer(userId, levelId, playerPosition, targetPosition) {
+  async function resetPlayer(
+    username,
+    levelId,
+    playerPosition,
+    targetPosition,
+    token
+  ) {
     setPlayerPosition(playerPositionsArray[0]);
-    setPlayerPositionsArray(prev => [prev[0]]);
-    setPlayerAcceptablePositionsArray(prev => [prev[0]]);
+    setPlayerPositionsArray((prev) => [prev[0]]);
+    setPlayerAcceptablePositionsArray((prev) => [prev[0]]);
     clearStack();
-    
+
     if (online) {
-      const newAttemptId = await postAttempt(userId, levelId, playerPosition, targetPosition);
+      const newAttemptId = await postAttempt(
+        username,
+        levelId,
+        playerPosition,
+        targetPosition,
+        token
+      );
       setAttemptId(newAttemptId);
     }
   }

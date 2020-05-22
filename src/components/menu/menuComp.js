@@ -57,10 +57,11 @@ export default function Menu(props) {
   function handleClickRestart() {
     props.endAttempt(props.attemptId, props.user.token);
     props.resetPlayer(
-      props.user.id,
+      props.user.userName,
       props.levelId,
       props.playerPosition,
-      props.targetPosition
+      props.targetPosition,
+      props.user.token
     );
     setMenuOpen(false);
   }
