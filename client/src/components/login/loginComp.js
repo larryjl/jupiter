@@ -17,6 +17,7 @@ export default function Login(props) {
 
   const startSession = useCallback(
     (user) => {
+      setLoading(false);
       setUser(user);
       setIsSignedIn(true); // component will unmount
     },
@@ -26,10 +27,15 @@ export default function Login(props) {
   // --- Google Login ---
   const successCallback = useCallback(
     async (googleId) => {
-      const user = await loginFxs.logGoogle(googleId);
-      startSession(user);
+      try {
+        const user = await loginFxs.logGoogle(googleId);
+        startSession(user);
+      } catch (error) {
+        setLoading(false);
+        setOnline(false);
+      }
     },
-    [startSession]
+    [startSession, setLoading, setOnline]
   );
   // --- end Google Login ---
 
@@ -65,7 +71,14 @@ export default function Login(props) {
       setLoading(false);
       return;
     }
-    let json = await register(username, password);
+    let json;
+    try {
+      json = await register(username, password);
+    } catch (error) {
+      setLoading(false);
+      setOnline(false);
+      return;
+    }
     if (json.status) {
       switch (json.status) {
         case 400:
@@ -85,7 +98,14 @@ export default function Login(props) {
   async function handleLogin() {
     setUsernameMsg("Logging in.");
     setLoading(true);
-    let json = await authenticate(username, password);
+    let json;
+    try {
+      json = await authenticate(username, password);
+    } catch (error) {
+      setLoading(false);
+      setOnline(false);
+      return;
+    }
     let token = json.access_token;
     if (json.status) {
       switch (json.status) {
@@ -99,7 +119,6 @@ export default function Login(props) {
           return;
       }
     }
-    setLoading(false);
     startSession({
       userName: username,
       type: "login",
@@ -114,8 +133,13 @@ export default function Login(props) {
     setUsernameMsg("Logging in as guest.");
     setLoading(true);
     googleSignOut();
-    const user = await loginFxs.logGuest(online);
-    startSession(user);
+    try {
+      const user = await loginFxs.logGuest(online);
+      startSession(user);
+    } catch (error) {
+      setLoading(false);
+      setOnline(false);
+    }
   }
 
   // --- end Guest Login ---

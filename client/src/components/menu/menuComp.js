@@ -5,6 +5,19 @@ import Score from "./scoreComp";
 import { googleSignOut } from "../login/googleLoginComp";
 
 export default function Menu(props) {
+  const {
+    endAttempt,
+    attemptId,
+    user,
+    setUser,
+    setIsSignedIn,
+    online,
+    setOnline,
+    resetPlayer,
+    levelId,
+    playerPosition,
+    targetPosition,
+  } = props;
   const [menuOpen, setMenuOpen] = useState(false);
   const [scoreOpen, setScoreOpen] = useState(false);
 
@@ -23,26 +36,34 @@ export default function Menu(props) {
     setScoreOpen((prev) => !prev);
     setMenuOpen((prev) => !prev);
   }
-  function handleClickRestart() {
-    props.endAttempt(props.attemptId, props.user.token);
-    props.resetPlayer(
-      props.user.userName,
-      props.levelId,
-      props.playerPosition,
-      props.targetPosition,
-      props.user.token
+  async function handleClickRestart() {
+    try {
+      await endAttempt(attemptId, user.token);
+    } catch (error) {
+      setOnline(false);
+    }
+    resetPlayer(
+      user.userName,
+      levelId,
+      playerPosition,
+      targetPosition,
+      user.token
     );
     setMenuOpen(false);
   }
   async function handleClickSignOut() {
-    props.endAttempt(props.attemptId, props.user.token);
-    if (props.user.type !== "guest") {
-      googleSignOut();
+    try {
+      await Promise.all([
+        endAttempt(attemptId, user.token),
+        user.type !== "guest" ? googleSignOut() : null,
+      ]);
+    } catch (error) {
+      setOnline(false);
     }
     setMenuOpen(false);
-    props.setUser(null);
+    setUser(null);
     setTimeout(() => {
-      props.setIsSignedIn(false); // unmount
+      setIsSignedIn(false); // unmount
     }, 400);
   }
   const buttonInfo = {
@@ -78,16 +99,21 @@ export default function Menu(props) {
         <MenuSvg alt="menu" tabIndex="0" />
       </button>
       {(menuOpen || scoreOpen) && (
-        <div id="menuOverlay" className="overlay" onClick={handleClickOverlay}></div>
+        <div
+          id="menuOverlay"
+          className="overlay"
+          onClick={handleClickOverlay}
+        ></div>
       )}
       <nav id="menuNav" className={menuOpen ? "open" : "closed"}>
         {buttons}
       </nav>
       <div id="scoreTab" className={scoreOpen ? "open" : "closed"}>
-        <Score 
-          user = {props.user} 
-          online = {props.online}
-          scoreOpen = {scoreOpen}
+        <Score
+          user={user}
+          online={online}
+          setOnline={setOnline}
+          scoreOpen={scoreOpen}
         />
       </div>
     </div>

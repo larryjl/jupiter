@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 Flask-CORS
 uwsgi
 psycopg2
+python-dotenv

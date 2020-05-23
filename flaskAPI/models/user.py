@@ -22,7 +22,9 @@ class UserModel(db.Model):
         return {
             "username": self.username,
             "password": self.password,
-            "levelId": max([attempt.levelId for attempt in self.attempts.all()]),
+            "levelId": max([attempt.levelId for attempt in self.attempts.all()])
+            if max
+            else 1,
         }
 
     @classmethod

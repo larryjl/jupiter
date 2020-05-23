@@ -13,18 +13,37 @@ from resources.sequence import AttemptSequence, Sequence, SequenceList, UserSequ
 from db import db
 
 if not os.environ.get("HEROKU"):
-    from .env import DATABASE_URL, SECRET_KEY
+    from dotenv import load_dotenv
 
+    load_dotenv()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", DATABASE_URL)
 
-# disable flask_sqlalchemy tracker but keep sqlalchemy tracker
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = os.environ.get("SECRET_KEY")
 
-app.secret_key = os.environ.get("SECRET_KEY", SECRET_KEY)
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+if os.environ.get("HEROKU"):
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": [
+                    "https://larryjl-jupiter.herokuapp.com/*",
+                    "https://larryjl.github.io/jupiter/",
+                ]
+            }
+        },
+    )
+else:
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/jupiter/"}})
+
 api = Api(app)
+
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 @app.route("/")
@@ -32,6 +51,7 @@ def home():
     return render_template("index.html")
 
 
+app.config["JWT_AUTH_URL_RULE"] = "/api/auth"
 jwt = JWT(app, authenticate, identity)  # /auth
 
 api.add_resource(UserRegister, "/api/register")

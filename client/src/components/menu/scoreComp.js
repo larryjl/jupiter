@@ -4,9 +4,11 @@ import { getScore } from "./scoreFunctions";
 import LoadIcon from "../loadIcon/loadIcon";
 
 export default function Score(props) {
-  const { user, online, scoreOpen } = props;
+  const { user, online, setOnline, scoreOpen } = props;
   const [scoreTable, setScoreTable] = useState(
-    <div id="noScore"><LoadIcon theme="dark "/></div>
+    <div id="noScore">
+      <LoadIcon theme="dark " />
+    </div>
   );
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function Score(props) {
               <tr key={i} className={scores[i].success ? "highlight" : ""}>
                 <td key="level">{scores[i].levelId}</td>
                 <td key="score">{scores[i].score}</td>
-                <td key="success">{scores[i].success? "Yes": "No"}</td>
+                <td key="success">{scores[i].success ? "Yes" : "No"}</td>
               </tr>
             );
           }
@@ -37,22 +39,29 @@ export default function Score(props) {
           );
         }
         async function fillScores(user) {
-          let scores = await getScore(user.userName, user.token);
+          let scores;
+          try {
+            scores = await getScore(user.userName, user.token);
+          } catch (error) {
+            setOnline(false);
+            return false;
+          }
           if (scores) {
             let table = buildTable(scores);
             setScoreTable(table);
+            return true;
+          } else {
+            setScoreTable(<p id="noScore">No scores yet!</p>);
+            return false;
           }
         }
-        fillScores(user);
-      } else {
-        setScoreTable(<p id="noScore">Scores are unavailable.</p>)
+        if (fillScores(user)) {
+          return;
+        }
       }
+      setScoreTable(<p id="noScore">Scores are unavailable.</p>);
     }
-  }, [user, online, scoreOpen]);
+  }, [user, online, setOnline, scoreOpen]);
 
-  return (
-    <div id="score"> 
-      {scoreTable}
-    </div>
-  )
+  return <div id="score">{scoreTable}</div>;
 }

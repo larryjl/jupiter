@@ -60,4 +60,6 @@ class User(Resource):
             user = UserModel.find_by_username(username)
         except:
             return {"message": "An error occurred searching the user."}, 500
+        if not user:
+            return {"message": "A user with that username does not exist."}, 404
         return user.json(), 200

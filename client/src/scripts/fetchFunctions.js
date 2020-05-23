@@ -17,7 +17,7 @@ async function register(username, password = "0") {
 }
 
 async function endAttempt(attemptId, token) {
-  let json = await fetchJson("attempt/id=" + attemptId, "PATCH", {}, token);
+  let json = await fetchJson("attempts/id=" + attemptId, "PATCH", {}, token);
   return json;
 }
 
@@ -34,7 +34,7 @@ async function postAttempt(
     targetPosition: JSON.stringify(targetPosition),
   };
   const json = await fetchJson(
-    "attempt/username=" + username,
+    "attempts/username=" + username,
     "POST",
     body,
     token
@@ -59,28 +59,53 @@ async function postRun(
     score: score,
     success: success,
   };
-  let json = await fetchJson("sequence/attemptid=" + attemptId, "POST", body, token);
-  return json
+  let json = await fetchJson(
+    "sequences/attemptid=" + attemptId,
+    "POST",
+    body,
+    token
+  );
+  return json;
 }
 
 async function getUserAttempts(username, token) {
-  let json = await fetchJson("attempt/username=" + username, "GET", undefined, token);
-  return json.attempts
+  let json = await fetchJson(
+    "attempts/username=" + username,
+    "GET",
+    undefined,
+    token
+  );
+  return json.attempts;
 }
 
 async function getAttempts(token) {
   let json = await fetchJson("attempts", "GET", undefined, token);
-  return json.attempts
+  return json.attempts;
 }
 
 async function getSequences(token) {
   let json = await fetchJson("sequences", "GET", undefined, token);
-  return json.sequences
+  return json.sequences;
 }
 
 async function getUserSequences(username, token) {
-  let json = await fetchJson("sequence/username=" + username, "GET", undefined, token);
-  return json.sequences
+  let json = await fetchJson(
+    "sequences/username=" + username,
+    "GET",
+    undefined,
+    token
+  );
+  return json.sequences;
 }
 
-export { authenticate, register, endAttempt, postAttempt, postRun, getUserAttempts, getAttempts, getSequences, getUserSequences };
+export {
+  authenticate,
+  register,
+  endAttempt,
+  postAttempt,
+  postRun,
+  getUserAttempts,
+  getAttempts,
+  getSequences,
+  getUserSequences,
+};

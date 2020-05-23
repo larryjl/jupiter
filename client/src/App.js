@@ -308,6 +308,7 @@ function Game(props) {
           setUser = {setUser}
           user = {user}
           online = {online}
+          setOnline = {setOnline}
           levelId = {currentLevel}
           playerPosition = {playerPositionsArray[0]}
           targetPosition = {targetPosition}
