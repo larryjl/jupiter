@@ -21,7 +21,13 @@ export default function Score(props) {
               <tr key={i} className={scores[i].success ? "highlight" : ""}>
                 <td key="level">{scores[i].levelId}</td>
                 <td key="score">{scores[i].score}</td>
-                <td key="success">{scores[i].success ? "Yes" : "No"}</td>
+                <td key="success">
+                  {scores[i].success === ""
+                    ? ""
+                    : scores[i].success
+                    ? "Yes"
+                    : "No"}
+                </td>
               </tr>
             );
           }

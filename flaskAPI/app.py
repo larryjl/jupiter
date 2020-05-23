@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, send_from_directory
 from flask_restful import Api
 from flask_jwt import JWT
 from flask_cors import CORS
@@ -17,7 +17,7 @@ if not os.environ.get("HEROKU"):
 
     load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../client/build", static_url_path="/jupiter/")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -30,13 +30,13 @@ if os.environ.get("HEROKU"):
             r"/api/*": {
                 "origins": [
                     "https://larryjl-jupiter.herokuapp.com/*",
-                    "https://larryjl.github.io/jupiter/",
+                    "https://larryjl.github.io/jupiter/*",
                 ]
             }
         },
     )
 else:
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/jupiter/"}})
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/*"}})
 
 api = Api(app)
 
@@ -47,8 +47,8 @@ def create_tables():
 
 
 @app.route("/")
-def home():
-    return render_template("index.html")
+def index():
+    return send_from_directory("../client/build", "index.html")
 
 
 app.config["JWT_AUTH_URL_RULE"] = "/api/auth"
