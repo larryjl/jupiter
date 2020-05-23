@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/jupiter/static/css/main.33d3683e.chunk.css",
-    "main.js": "/jupiter/static/js/main.97dc343f.chunk.js",
-    "main.js.map": "/jupiter/static/js/main.97dc343f.chunk.js.map",
+    "main.js": "/jupiter/static/js/main.5d72785d.chunk.js",
+    "main.js.map": "/jupiter/static/js/main.5d72785d.chunk.js.map",
     "runtime-main.js": "/jupiter/static/js/runtime-main.b435ec23.js",
     "runtime-main.js.map": "/jupiter/static/js/runtime-main.b435ec23.js.map",
     "static/js/2.3be99b66.chunk.js": "/jupiter/static/js/2.3be99b66.chunk.js",
     "static/js/2.3be99b66.chunk.js.map": "/jupiter/static/js/2.3be99b66.chunk.js.map",
     "index.html": "/jupiter/index.html",
-    "precache-manifest.94ae5aa785530e19c303aa5f9fb4a32b.js": "/jupiter/precache-manifest.94ae5aa785530e19c303aa5f9fb4a32b.js",
+    "precache-manifest.de1859c85d63d922037c3afc41bb1bc4.js": "/jupiter/precache-manifest.de1859c85d63d922037c3afc41bb1bc4.js",
     "service-worker.js": "/jupiter/service-worker.js",
     "static/css/main.33d3683e.chunk.css.map": "/jupiter/static/css/main.33d3683e.chunk.css.map",
     "static/js/2.3be99b66.chunk.js.LICENSE.txt": "/jupiter/static/js/2.3be99b66.chunk.js.LICENSE.txt",
@@ -30,6 +30,6 @@
     "static/js/runtime-main.b435ec23.js",
     "static/js/2.3be99b66.chunk.js",
     "static/css/main.33d3683e.chunk.css",
-    "static/js/main.97dc343f.chunk.js"
+    "static/js/main.5d72785d.chunk.js"
   ]
 }
