@@ -63,7 +63,7 @@
   stroke: var(--icon-stroke-color);
 }
 .controlBtn ellipse {
-  fill: var(--gold-2);
+  fill: var(--icon-fill-color);
 }
 .iconBtn:hover, .controlSelect:hover {
   transition: 0.1s;

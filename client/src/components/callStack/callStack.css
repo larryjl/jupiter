@@ -112,6 +112,13 @@
     align-self: center;
     justify-self: center;
 }
+.calling-card .cardIcon path,
+.calling-card .cardIcon ellipse {
+    stroke: var(--icon-stroke-color4);
+}
+.calling-card .cardIcon ellipse {
+    fill: var(--icon-fill-color4);
+}
 .calling-card p {
     margin: 0;
     align-self: center;

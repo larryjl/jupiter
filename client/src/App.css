@@ -6,12 +6,20 @@
   --text-primary-color: #0f0f0f;
   --text-secondary-color: #f0f8ff;
   --text-emphasis-color: #2CBF3E;
+
+    /* main buttons */
   --icon-fill-color: #e2ab0b;
   --icon-stroke-color: #1d219d;
+    /* sideboard inactive tabs */
   --icon-fill-color2: #e2ab0b;
   --icon-stroke-color2: #0f0f0f;
+  /* sideboard active tab */
   --icon-fill-color3: #73bd33;
   --icon-stroke-color3: #0f0f0f;
+  /* callstack card icon */
+  --icon-fill-color4: #ffe699;
+  --icon-stroke-color4: #1d219d;
+
   --game-background-color: rgba(255, 255, 255, 0.2);
   --menu-background-color: rgb(240, 248, 255, 0.9);
   --input-background-color: #ffe699;
