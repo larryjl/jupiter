@@ -31,6 +31,7 @@ if os.environ.get("HEROKU"):
                 "origins": [
                     "https://larryjl-jupiter.herokuapp.com/*",
                     "https://larryjl.github.io/jupiter/*",
+                    "http://larryjl-jupiter.s3-website.ca-central-1.amazonaws.com/",
                 ]
             }
         },
